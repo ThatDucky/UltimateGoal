@@ -1,3 +1,5 @@
+package org.firstinspires.ftc.teamcode;
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import java.lang.Math;
@@ -6,6 +8,7 @@ import java.lang.Math;
 
 public class Drive extends OpMode {
         Hardware robot = new Hardware();
+
         @Override
         public void init() {
 
