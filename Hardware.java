@@ -4,10 +4,10 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class Hardware {
     //naming robot Drive motor
-    public DcMotor  = null;
+    public DcMotor one = null;
 
     //naming servos
-    public Servo  = null;
+    //public Servo  = null;
 
     //servo vars
 
@@ -25,16 +25,16 @@ public class Hardware {
         hwMap = ahwMap;
 
         // define and initialize drive motors
-        driveOne = hwMap.get(DcMotor.class, "");
+        one = hwMap.get(DcMotor.class, "one");
 
         //set direction of the motors
-        driveOne.setDirection(DcMotor.Direction.REVERSE);
+        one.setDirection(DcMotor.Direction.REVERSE);
 
         //set all drive motors to zero power
-        driveOne.setPower(0);
+        one.setPower(0);
 
         //define the Servos
-        leftArm = hwMap.get(Servo.class, "");
+        //leftArm = hwMap.get(Servo.class, "");
     }
 
 

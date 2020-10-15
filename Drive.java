@@ -24,6 +24,6 @@ public class Drive extends OpMode {
         @Override
         public void loop() {
                 robot.init(hardwareMap);
-
+                robot.one.setPower(1);
         }
 }
