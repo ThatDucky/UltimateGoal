@@ -11,6 +11,9 @@ public class Auto extends LinearOpMode {
     @Override
     public void runOpMode(){
         robot.init(hardwareMap);
-        
+        waitForStart();
+        robot.one.setPower(0.25);
+        sleep(10000);
+        robot.one.setPower(0);
     }
 }

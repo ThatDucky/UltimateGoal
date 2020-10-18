@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -29,8 +30,14 @@ public class Hardware {
         // define and initialize drive motors
         one = hwMap.get(DcMotor.class, "one");
 
+        //set motor target postition
+        one.setTargetPosition(5000);
+
+        //set motor mode
+        one.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
         //set direction of the motors
-        one.setDirection(DcMotor.Direction.REVERSE);
+        one.setDirection(DcMotor.Direction.FORWARD);
 
         //set all drive motors to zero power
         one.setPower(0);
