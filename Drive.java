@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
-@TeleOp(name = "Drive", group = "TeleOp")
+@TeleOp(name = "Drive", group = "Drive")
 
 public class Drive extends OpMode {
         Hardware robot = new Hardware();
