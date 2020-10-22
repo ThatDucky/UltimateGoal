@@ -11,18 +11,20 @@ public class Auto extends LinearOpMode {
 
     @Override
     public void runOpMode(){
-        double revs = (28/(10 * 3.14));
-
         robot.init(hardwareMap);
         waitForStart();
 
-        robot.setTargetPosition((int)revs);
-        robot.one.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-        robot.setPower(1);
-        while(robot.one.isBusy()){
+        goToPosition(1,0.8);
+    }
+
+    public void goToPosition(int decimeters, double power){
+        robot.setMode(0);
+        robot.setTargetPosition(decimeters);
+        robot.setPower(power, power);
+        while(robot.one.isBusy() || robot.two.isBusy() || robot.three.isBusy() || robot.four.isBusy()){
             sleep(10);
         }
-        robot.setPower(0);
-        robot.reset();
+        robot.setPower(0,0);
+        robot.setMode(0);
     }
 }
