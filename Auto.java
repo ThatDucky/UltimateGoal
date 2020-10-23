@@ -19,14 +19,11 @@ public class Auto extends LinearOpMode {
         robot.two.setPower(1);
         robot.three.setPower(1);
         robot.four.setPower(1);
-
-        //robot.setPower(1,1);
         sleep(10000);
         //goToPosition(9,10);
     }
 
     public void goToPosition(int decimeters, double power){
-        robot.setMode(0);
         robot.setTargetPosition(decimeters);
         robot.setMode(1);
         robot.setPower(power, power);

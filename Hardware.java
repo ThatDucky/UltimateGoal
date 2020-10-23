@@ -40,12 +40,12 @@ public class Hardware{
         three = hwMap.get(DcMotorEx.class, "three");
         four = hwMap.get(DcMotorEx.class, "four");
 
-        //set motor mode
+        //set motor mode to reset encoders
         setMode(0);
 
         //set direction of the motors
-        one.setDirection(DcMotorEx.Direction.REVERSE); //left Front
-        two.setDirection(DcMotorEx.Direction.REVERSE); //left Back
+        one.setDirection(DcMotorEx.Direction.FORWARD); //left Front
+        two.setDirection(DcMotorEx.Direction.FORWARD); //left Back
         three.setDirection(DcMotorEx.Direction.FORWARD); //right Front
         four.setDirection(DcMotorEx.Direction.FORWARD); //right Back
 

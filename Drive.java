@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
-@TeleOp(name = "Drive", group = "Drive")
+@TeleOp(name = "Drive", group = "TeleOp")
 
 public class Drive extends OpMode {
         Hardware robot = new Hardware();
@@ -21,15 +21,9 @@ public class Drive extends OpMode {
 
         @Override
         public void start() {
-
-        }
-
-        @Override
-        public void loop() {
                 robot.init(hardwareMap); //initialize robot
                 robot.setMode(2); //set to run without encoders
                 double deadZone = 0.12;
-
 
                 if(gamepad1.left_stick_y > deadZone || gamepad1.left_stick_y < (deadZone * -1)){
                         //set both sides to positive/negative power for going forward or backward
@@ -38,5 +32,10 @@ public class Drive extends OpMode {
                         //left side gets negative power for turning
                         robot.setPower((gamepad1.left_stick_x * -1), gamepad1.left_stick_x);
                 }
+        }
+
+        @Override
+        public void loop() {
+
         }
 }
