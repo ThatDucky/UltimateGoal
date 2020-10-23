@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import java.lang.Math;
@@ -43,10 +44,10 @@ public class Hardware{
         setMode(0);
 
         //set direction of the motors
-        one.setDirection(DcMotorEx.Direction.FORWARD); //left Front
-        two.setDirection(DcMotorEx.Direction.FORWARD); //left Back
-        three.setDirection(DcMotorEx.Direction.REVERSE); //right Front
-        four.setDirection(DcMotorEx.Direction.REVERSE); //right Back
+        one.setDirection(DcMotorEx.Direction.REVERSE); //left Front
+        two.setDirection(DcMotorEx.Direction.REVERSE); //left Back
+        three.setDirection(DcMotorEx.Direction.FORWARD); //right Front
+        four.setDirection(DcMotorEx.Direction.FORWARD); //right Back
 
         //set all drive motors to zero power
         setPower(0,0);
@@ -65,7 +66,7 @@ public class Hardware{
 
     public void setTargetPosition(double decimeters){
         //set the target position of all the motors at once
-        int target = (int)(Math.round(decimeters * ticksPerDecimeters));
+        int target = (int)(decimeters * ticksPerDecimeters);
         one.setTargetPosition(one.getCurrentPosition() + target);
         two.setTargetPosition(two.getCurrentPosition() + target);
         three.setTargetPosition(three.getCurrentPosition() + target);

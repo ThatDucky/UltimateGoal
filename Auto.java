@@ -14,12 +14,21 @@ public class Auto extends LinearOpMode {
         robot.init(hardwareMap);
         waitForStart();
 
-        goToPosition(1,0.8);
+        robot.setMode(2);
+        robot.one.setPower(1);
+        robot.two.setPower(1);
+        robot.three.setPower(1);
+        robot.four.setPower(1);
+
+        //robot.setPower(1,1);
+        sleep(10000);
+        //goToPosition(9,10);
     }
 
     public void goToPosition(int decimeters, double power){
         robot.setMode(0);
         robot.setTargetPosition(decimeters);
+        robot.setMode(1);
         robot.setPower(power, power);
         while(robot.one.isBusy() || robot.two.isBusy() || robot.three.isBusy() || robot.four.isBusy()){
             sleep(10);

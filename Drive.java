@@ -30,6 +30,7 @@ public class Drive extends OpMode {
                 robot.setMode(2); //set to run without encoders
                 double deadZone = 0.12;
 
+
                 if(gamepad1.left_stick_y > deadZone || gamepad1.left_stick_y < (deadZone * -1)){
                         //set both sides to positive/negative power for going forward or backward
                         robot.setPower(gamepad1.left_stick_y, gamepad1.left_stick_y);
