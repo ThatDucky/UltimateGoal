@@ -9,18 +9,11 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 public class Drive extends OpMode {
         Hardware robot = new Hardware();
 
-        @Override
         public void init() {
 
         }
 
-        @Override
-        public void init_loop() {
-
-        }
-
-        @Override
-        public void start() {
+        public void loop() {
                 robot.init(hardwareMap); //initialize robot
                 robot.setMode(2); //set to run without encoders
                 double deadZone = 0.12;
@@ -32,10 +25,5 @@ public class Drive extends OpMode {
                         //left side gets negative power for turning
                         robot.setPower((gamepad1.left_stick_x * -1), gamepad1.left_stick_x);
                 }
-        }
-
-        @Override
-        public void loop() {
-
         }
 }
