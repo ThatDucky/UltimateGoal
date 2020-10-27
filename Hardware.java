@@ -8,9 +8,9 @@ import java.lang.Math;
 
 public class Hardware{
     //Revs Per Decimeters - variables
-    double diameter = 1; //measure the wheel in decimeter
+    double diameter = 10; //measure the wheel in centimeters
     double ticks = 28; //REV-41-129 has 28 ticks per cycle
-    double ticksPerDecimeters = ticks / (diameter * 3.1415);
+    double ticksPerCentimeters =  ticks / (diameter * 3.1415); //1.12 cm per tick or 0.89 ticks per cm
 
     //naming robot Drive motor
     public DcMotorEx one = null;
@@ -66,7 +66,7 @@ public class Hardware{
 
     public void setTargetPosition(double decimeters){
         //set the target position of all the motors at once
-        int target = (int)(decimeters * ticksPerDecimeters);
+        int target = (int)(Math.round((decimeters * 10) * ticksPerCentimeters));
         one.setTargetPosition(one.getCurrentPosition() + target);
         two.setTargetPosition(two.getCurrentPosition() + target);
         three.setTargetPosition(three.getCurrentPosition() + target);
