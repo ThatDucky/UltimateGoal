@@ -18,6 +18,7 @@ public class Auto extends LinearOpMode {
     }
 
     public void goToPosition(int decimeters, double power){
+        //go through the steps to get to target distance
         robot.setTargetPosition(decimeters);
         robot.setMode(1);
         robot.setPower(power, power);
