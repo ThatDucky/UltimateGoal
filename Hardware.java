@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import java.lang.Math;
 
-public class Hardware{
+public class Hardware {
     //Revs Per Decimeters - variables
     double diameter = 10; //measure the wheel in centimeters
     double ticks = 28; //REV-41-129 has 28 ticks per cycle
@@ -25,12 +25,12 @@ public class Hardware{
     HardwareMap hwMap = null;
 
     //constructor
-    public Hardware(){
+    public Hardware() {
 
     }
 
     //initialize standard hardware interface
-    public void init(HardwareMap ahwMap){
+    public void init(HardwareMap ahwMap) {
         //save reference to hardware map
         hwMap = ahwMap;
 
@@ -46,8 +46,8 @@ public class Hardware{
         //set direction of the motors
         one.setDirection(DcMotorEx.Direction.FORWARD); //left Front
         two.setDirection(DcMotorEx.Direction.FORWARD); //left Back
-        three.setDirection(DcMotorEx.Direction.FORWARD); //right Front
-        four.setDirection(DcMotorEx.Direction.FORWARD); //right Back
+        three.setDirection(DcMotorEx.Direction.REVERSE); //right Front
+        four.setDirection(DcMotorEx.Direction.REVERSE); //right Back
 
         //set all drive motors to zero power
         setPower(0,0);
@@ -56,7 +56,7 @@ public class Hardware{
         // = hwMap.get(Servo.class, "");
     }
 
-    public void setPower(double lPower,double rPower){
+    public void setPower(double lPower,double rPower) {
         //set the power of all motors at once
         one.setPower(lPower);
         two.setPower(lPower);
@@ -64,7 +64,7 @@ public class Hardware{
         four.setPower(rPower);
     }
 
-    public void setTargetPosition(double decimeters){
+    public void setTargetPosition(double decimeters) {
         //set the target position of all the motors at once
         int target = (int)(Math.round((decimeters * 10) * ticksPerCentimeters));
         one.setTargetPosition(one.getCurrentPosition() + target);
@@ -72,8 +72,15 @@ public class Hardware{
         three.setTargetPosition(three.getCurrentPosition() + target);
         four.setTargetPosition(four.getCurrentPosition() + target);
     }
+    public String getTargetPosition() {
+        return one.getTargetPosition() + " " + two.getTargetPosition() + " " + three.getTargetPosition() + " " + four.getTargetPosition();
+    }
 
-    public void setMode(int mode){
+    public boolean isBusy() {
+        return one.isBusy() || two.isBusy() || three.isBusy() || four.isBusy();
+    }
+
+    public void setMode(int mode) {
         switch (mode){
             case 0:
                 //reset all encoders
