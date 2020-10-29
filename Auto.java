@@ -21,6 +21,7 @@ public class Auto extends LinearOpMode {
 
     public void goToPosition(int decimeters, double power) {
         //go through the steps to get to target distance
+        decimeters *= -1;
         robot.setTargetPosition(decimeters);
         telemetry.addData("Running To Position", robot.getTargetPosition());
         telemetry.update();
