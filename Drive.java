@@ -24,8 +24,7 @@ public class Drive extends OpMode {
 
     @Override
     public void start() {
-        telemetry.addData("Status", "Running");
-        telemetry.update(); //setup telemetry and call it
+
     }
 
     @Override
@@ -44,5 +43,22 @@ public class Drive extends OpMode {
                 //if no joystick input reset to 0 power
                 robot.setPower(0,0);
         }
+        /*
+        if(gamepad1.left_trigger > 0){
+            //set Fly Wheel To Spin Up if Left Trigger Is Held
+            robot.fWheelPower(1);
+            if(gamepad1.right_trigger > 0){
+                //Set Launcher To Fire if Right Trigger is Pressed
+                robot.launcher.setPosition(robot.fire);
+            }else{
+                //Reset Launcher To Rest Posistion if Left Trigger is Not Pressed
+                robot.launcher.setPosition(robot.rest);
+            }
+        }else{
+            //Reset everything if left Trigger is not pressed
+            robot.fWheelPower(0);
+            robot.launcher.setPosition(robot.rest);
+        }
+        */
     }
 }

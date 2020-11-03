@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -17,9 +18,15 @@ public class Hardware {
     public DcMotorEx two = null;
     public DcMotorEx three = null;
     public DcMotorEx four = null;
+    //public DcMotorEx fWheelOne = null;
+    //public DcMotorEx fWheelTwo = null;
 
     //naming servos
-    //public Servo  = null;
+    //public Servo launcher = null;
+
+    //servo vars
+    public double rest = 0.0;
+    public double fire = 1.0;
 
     //local op mode members
     HardwareMap hwMap = null;
@@ -39,9 +46,13 @@ public class Hardware {
         two = hwMap.get(DcMotorEx.class, "two");
         three = hwMap.get(DcMotorEx.class, "three");
         four = hwMap.get(DcMotorEx.class, "four");
+        //fWheelOne = hwMap.get(DcMotorEx.class, "fWheelOne");
+        //fWheelTwo = hwMap.get(DcMotorEx.class, "fWheelTwo");
 
         //set motor mode to reset encoders
         setMode(0);
+        //fWheelOne.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //fWheelTwo.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         //set direction of the motors
         one.setDirection(DcMotorEx.Direction.FORWARD); //left Front
@@ -51,11 +62,17 @@ public class Hardware {
 
         //set all drive motors to zero power
         setPower(0,0);
+        //fWheelPower(0);
 
         //define the Servos
-        // = hwMap.get(Servo.class, "");
+        //launcher = hwMap.get(Servo.class, "launcher");
     }
-
+    /*
+    public void fWheelPower(double power){
+        fWheelOne.setPower(power);
+        fWheelTwo.setPower(power);
+    }
+    */
     public void setPower(double lPower,double rPower) {
         //set the power of all motors at once
         one.setPower(lPower);
