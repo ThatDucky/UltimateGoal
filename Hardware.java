@@ -115,10 +115,10 @@ public class Hardware {
                 break;
             case 2:
                 //drive mode - shut off encoders
-                one.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
-                two.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
-                three.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
-                four.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+                one.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+                two.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+                three.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+                four.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
                 break;
         }
     }
