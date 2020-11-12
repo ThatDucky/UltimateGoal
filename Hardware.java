@@ -18,8 +18,9 @@ public class Hardware {
     public DcMotorEx two = null;
     public DcMotorEx three = null;
     public DcMotorEx four = null;
-    //public DcMotorEx fWheelOne = null; //left
-    //public DcMotorEx fWheelTwo = null; //right
+
+    public DcMotorEx fWheelOne = null; //left
+    public DcMotorEx fWheelTwo = null; //right
 
     //naming servos
     //public Servo launcher = null;
@@ -46,13 +47,13 @@ public class Hardware {
         two = hwMap.get(DcMotorEx.class, "two");
         three = hwMap.get(DcMotorEx.class, "three");
         four = hwMap.get(DcMotorEx.class, "four");
-        //fWheelOne = hwMap.get(DcMotorEx.class, "fWheelOne");
-        //fWheelTwo = hwMap.get(DcMotorEx.class, "fWheelTwo");
+        fWheelOne = hwMap.get(DcMotorEx.class, "fWheelOne");
+        fWheelTwo = hwMap.get(DcMotorEx.class, "fWheelTwo");
 
         //set motor mode to reset encoders
         setMode(0);
-        //fWheelOne.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        //fWheelTwo.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        fWheelOne.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        fWheelTwo.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         //set direction of the motors
         one.setDirection(DcMotorEx.Direction.FORWARD); //left Front
@@ -60,19 +61,22 @@ public class Hardware {
         three.setDirection(DcMotorEx.Direction.REVERSE); //right Front
         four.setDirection(DcMotorEx.Direction.REVERSE); //right Back
 
+        fWheelOne.setDirection(DcMotorEx.Direction.FORWARD);
+        fWheelTwo.setDirection(DcMotorEx.Direction.REVERSE);
+
         //set all drive motors to zero power
         setPower(0,0);
-        //fWheelPower(0);
+        fWheelPower(0);
 
         //define the Servos
         //launcher = hwMap.get(Servo.class, "launcher");
     }
-    /*
+
     public void fWheelPower(double power){
         fWheelOne.setPower(power);
         fWheelTwo.setPower(power);
     }
-    */
+
     public void setPower(double lPower,double rPower) {
         //set the power of all motors at once
         one.setPower(lPower);
