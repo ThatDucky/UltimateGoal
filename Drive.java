@@ -51,7 +51,7 @@ public class Drive extends OpMode {
                 //Set Launcher To Fire if Right Trigger is Pressed
                 robot.launcher.setPosition(robot.fire);
             }else{
-                //Reset Launcher To Rest Posistion if Left Trigger is Not Pressed
+                //Reset Launcher To Rest Position if Left Trigger is Not Pressed
                 robot.launcher.setPosition(robot.rest);
             }
         }else{

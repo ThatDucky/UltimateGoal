@@ -18,8 +18,8 @@ public class Hardware {
     public DcMotorEx two = null;
     public DcMotorEx three = null;
     public DcMotorEx four = null;
-    //public DcMotorEx fWheelOne = null;
-    //public DcMotorEx fWheelTwo = null;
+    //public DcMotorEx fWheelOne = null; //left
+    //public DcMotorEx fWheelTwo = null; //right
 
     //naming servos
     //public Servo launcher = null;
@@ -51,8 +51,8 @@ public class Hardware {
 
         //set motor mode to reset encoders
         setMode(0);
-        //fWheelOne.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        //fWheelTwo.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //fWheelOne.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //fWheelTwo.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         //set direction of the motors
         one.setDirection(DcMotorEx.Direction.FORWARD); //left Front
@@ -114,11 +114,18 @@ public class Hardware {
                 four.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
                 break;
             case 2:
-                //drive mode - shut off encoders
+                //drive mode - run with encoders
                 one.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
                 two.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
                 three.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
                 four.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+                break;
+            case 3:
+                //drive mode - shut off encoders
+                one.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+                two.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+                three.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+                four.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
                 break;
         }
     }
