@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
+import java.lang.Math;
 
 @Autonomous(name = "Auto", group = "Auto")
 
@@ -10,7 +10,7 @@ public class Auto extends LinearOpMode {
     Hardware robot = new Hardware();
 
     @Override
-    public void runOpMode() {
+    public void runOpMode(){
         robot.init(hardwareMap);
         telemetry.addData("Status", "Ready");
         telemetry.update(); //setup telemetry and call it
@@ -19,7 +19,7 @@ public class Auto extends LinearOpMode {
         goToPosition(10,0.8);
     }
 
-    public void goToPosition(int decimeters, double power) {
+    public void goToPosition(int decimeters, double power){
         //go through the steps to get to target distance
         decimeters *= -1;
         robot.setTargetPosition(decimeters);
