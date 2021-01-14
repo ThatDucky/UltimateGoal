@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import java.lang.Math;
@@ -19,8 +20,6 @@ public class Hardware {
     //naming robot Drive motor
     public DcMotorEx one = null;
     public DcMotorEx two = null;
-    public DcMotorEx three = null;
-    public DcMotorEx four = null;
 
     public DcMotorEx fWheelOne = null; //right
     public DcMotorEx fWheelTwo = null; //left
@@ -45,8 +44,6 @@ public class Hardware {
         // define and initialize drive motors
         one = hwMap.get(DcMotorEx.class, "one");
         two = hwMap.get(DcMotorEx.class, "two");
-        three = hwMap.get(DcMotorEx.class, "three");
-        four = hwMap.get(DcMotorEx.class, "four");
         fWheelOne = hwMap.get(DcMotorEx.class, "fWheelOne");
         fWheelTwo = hwMap.get(DcMotorEx.class, "fWheelTwo");
 
@@ -57,9 +54,7 @@ public class Hardware {
 
         //set direction of the motors
         one.setDirection(DcMotorEx.Direction.FORWARD); //left Front
-        two.setDirection(DcMotorEx.Direction.FORWARD); //left Back
-        three.setDirection(DcMotorEx.Direction.REVERSE); //right Front
-        four.setDirection(DcMotorEx.Direction.REVERSE); //right Back
+        two.setDirection(DcMotorEx.Direction.REVERSE); //left Back
         fWheelOne.setDirection(DcMotorEx.Direction.FORWARD); //right flywheel
         fWheelTwo.setDirection(DcMotorEx.Direction.REVERSE); //left flywheel
 
@@ -80,9 +75,7 @@ public class Hardware {
     public void setPower(double lPower,double rPower){
         //set the power of all motors at once
         one.setPower(lPower);
-        two.setPower(lPower);
-        three.setPower(rPower);
-        four.setPower(rPower);
+        two.setPower(rPower);
     }
 
     public void setTargetPosition(double decimeters){
@@ -90,17 +83,15 @@ public class Hardware {
         int target = (int)(Math.round((decimeters * 10) * ticksPerCentimeters));
         one.setTargetPosition(one.getCurrentPosition() + target);
         two.setTargetPosition(two.getCurrentPosition() + target);
-        three.setTargetPosition(three.getCurrentPosition() + target);
-        four.setTargetPosition(four.getCurrentPosition() + target);
     }
     public String getTargetPosition(){
         //returns a string of all the target positions of the motors
-        return one.getTargetPosition() + " " + two.getTargetPosition() + " " + three.getTargetPosition() + " " + four.getTargetPosition();
+        return one.getTargetPosition() + " " + two.getTargetPosition();
     }
 
     public boolean isBusy(){
         //checks to see if any of the motor are in use and returns a bool
-        return one.isBusy() || two.isBusy() || three.isBusy() || four.isBusy();
+        return one.isBusy() || two.isBusy();
     }
 
     public void setMode(int mode){
@@ -110,29 +101,21 @@ public class Hardware {
                 //reset all encoders
                 one.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
                 two.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-                three.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-                four.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
                 break;
             case 1:
                 //set to run to position mode
                 one.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
                 two.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-                three.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-                four.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
                 break;
             case 2:
                 //drive mode - run with encoders
                 one.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
                 two.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-                three.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-                four.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
                 break;
             case 3:
                 //drive mode - shut off encoders
                 one.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
                 two.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
-                three.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
-                four.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
                 break;
         }
     }
