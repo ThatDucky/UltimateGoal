@@ -10,7 +10,7 @@ public class Hardware {
     //Revs Per Decimeters - variables
     double diameter = 10; //measure the wheel in centimeters
     double ticks = 28; //REV-41-129 has 28 ticks per cycle
-    double ticksPerCentimeters = ticks / (diameter * 3.1415); //1.12 cm per tick or 0.89 ticks per cm
+    double ticksPerCentimeters = (ticks / (diameter * 3.1415)) * 12; //12 is for the gear reduction
 
     //flywheel variables
     double highGoal = 0.92;

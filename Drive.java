@@ -2,12 +2,16 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
+import org.firstinspires.ftc.robotcore.external.android.AndroidGyroscope;
+
 import java.lang.Math;
 
 @TeleOp(name = "Drive", group = "Drive")
 
 public class Drive extends OpMode {
     Hardware robot = new Hardware();
+    AndroidGyroscope gyro = new AndroidGyroscope();
 
     @Override
     public void init() {
@@ -62,6 +66,7 @@ public class Drive extends OpMode {
         //set up the display telemetry
         telemetry.addData("Left Stick Position", gamepad1.left_stick_x + " " + gamepad1.left_stick_y);
         telemetry.addData("Velocity", " " + velocity);
+        telemetry.addData("Gyro", "X:" + gyro.getX() + " Y:" + gyro.getY() + " Z:" + gyro.getZ());
         telemetry.update();
     }
 }
