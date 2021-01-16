@@ -24,24 +24,27 @@ public class Drive extends OpMode {
 
     @Override
     public void loop() {
-        double deadZone = 0.12; //controller dead zone
+        double deadZone = 0.10; //controller dead zone
         double velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity
 
-        if(gamepad1.left_stick_y > deadZone || gamepad1.left_stick_y < (deadZone * -1)){
-            //set both sides to positive/negative power for going forward or backward
-            robot.setPower(gamepad1.left_stick_y * -1, gamepad1.left_stick_y * -1);
-        }else if(gamepad1.left_stick_x > deadZone || gamepad1.left_stick_x < (deadZone * -1)){
-            //left side gets negative power for turning
-            robot.setPower(gamepad1.left_stick_x, gamepad1.left_stick_x * -1);
+        //gets x and y values of the game pad and offsets the y value by a percent of the x
+        double left = gamepad1.left_stick_y + (gamepad1.left_stick_x * 0.5);
+        double right = gamepad1.left_stick_y - (gamepad1.left_stick_x * 0.5);
+
+        if(left > deadZone || left < (deadZone * -1) || right > deadZone || right < (deadZone * -1)){
+            //passes power to the motor if the game pad is pushed farther than the dead zone in any direction
+            robot.setPower(left, right);
         }else{
-            //if no joystick input reset to 0 power
+            //kills power otherwise
             robot.setPower(0,0);
         }
+
 
         if(gamepad1.left_trigger > 0){
             //set Fly Wheel To Spin Up if Left Trigger Is Held
             robot.fWheelPower(robot.highGoal);
         }else if(gamepad1.left_bumper){
+            //sets the fly wheel speed to the power shot goal if bummer is held
             robot.fWheelPower(robot.powerShot);
         }else{
             //Reset fly wheel if left Trigger is not pressed
