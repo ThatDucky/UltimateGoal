@@ -11,12 +11,22 @@ public class Auto extends LinearOpMode {
 
     @Override
     public void runOpMode(){
-        robot.init(hardwareMap);
-        telemetry.addData("Status", "Ready");
-        telemetry.update(); //setup telemetry and call it
-        waitForStart();
+            robot.init(hardwareMap);
+            telemetry.addData("Status: ", "Ready");
+            telemetry.update(); //setup telemetry and call it
+            waitForStart();
 
-        goToPosition(10,0.8);
+            robot.setPower(0.20, 0.20);
+            while(robot.color.blue() < 60){
+                sleep(100);
+            }
+            robot.setPower(0, 0);
+            robot.fWheelPower(robot.powerShot);
+            sleep(3000);
+            robot.launcher.setPosition(robot.fire);
+            sleep(1000);
+            robot.launcher.setPosition(robot.rest);
+            robot.fWheelPower(0);
     }
 
     public void goToPosition(int decimeters, double power){

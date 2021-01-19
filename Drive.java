@@ -11,13 +11,18 @@ import java.lang.Math;
 
 public class Drive extends OpMode {
     Hardware robot = new Hardware();
-    AndroidGyroscope gyro = new AndroidGyroscope();
 
     @Override
     public void init() {
         robot.init(hardwareMap);
         robot.setMode(2); //set to run using encoders
-        telemetry.addData("Status", "Ready");
+        robot.gyro.calibrate();
+        while(robot.gyro.isCalibrating()){
+            telemetry.addData("Gyro: ", "Calibrating...");
+            telemetry.update();
+        }
+        telemetry.addData("Gyro: ","Ready");
+        telemetry.addData("Status: ", "Ready");
         telemetry.update(); //setup telemetry and call it
     }
 
@@ -30,10 +35,11 @@ public class Drive extends OpMode {
     public void loop() {
         double deadZone = 0.10; //controller dead zone
         double velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity
+        double xOffSet = 0.70; //x off set for movement
 
         //gets x and y values of the game pad and offsets the y value by a percent of the x
-        double left = gamepad1.left_stick_y + (gamepad1.left_stick_x * 0.5);
-        double right = gamepad1.left_stick_y - (gamepad1.left_stick_x * 0.5);
+        double left = (gamepad1.left_stick_y * -1) + (gamepad1.left_stick_x * xOffSet);
+        double right = (gamepad1.left_stick_y * -1) - (gamepad1.left_stick_x * xOffSet);
 
         if(left > deadZone || left < (deadZone * -1) || right > deadZone || right < (deadZone * -1)){
             //passes power to the motor if the game pad is pushed farther than the dead zone in any direction
@@ -64,9 +70,10 @@ public class Drive extends OpMode {
         }
 
         //set up the display telemetry
-        telemetry.addData("Left Stick Position", gamepad1.left_stick_x + " " + gamepad1.left_stick_y);
-        telemetry.addData("Velocity", " " + velocity);
-        telemetry.addData("Gyro", "X:" + gyro.getX() + " Y:" + gyro.getY() + " Z:" + gyro.getZ());
+        telemetry.addData("Left Stick Position: ", gamepad1.left_stick_x + " " + gamepad1.left_stick_y);
+        telemetry.addData("Velocity: ", "" + velocity);
+        telemetry.addData("Blue: ", "" + robot.color.blue());
+        telemetry.addData("Gyro: ", "X:" + robot.gyro.rawX() + " Y:" + robot.gyro.rawY() + " Z:" + robot.gyro.rawZ());
         telemetry.update();
     }
 }

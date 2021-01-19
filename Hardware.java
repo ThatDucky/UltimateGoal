@@ -2,8 +2,10 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import java.lang.Math;
 
 public class Hardware {
@@ -15,6 +17,10 @@ public class Hardware {
     //flywheel variables
     double highGoal = 0.92;
     double powerShot = 0.85;
+
+    //Sensors
+    public ColorSensor color = null;
+    public GyroSensor gyro = null;
 
     //naming robot Drive motor
     public DcMotorEx one = null;
@@ -32,9 +38,6 @@ public class Hardware {
     public double rest = 0.0;
     public double fire = 0.45;
 
-    //local op mode members
-    HardwareMap hwMap = null;
-
     //constructor
     public Hardware(){
 
@@ -42,6 +45,10 @@ public class Hardware {
 
     //initialize standard hardware interface
     public void init(HardwareMap hwMap){
+        //sensor setup
+        color = hwMap.get(ColorSensor.class, "color");
+        gyro = hwMap.get(GyroSensor.class, "gyro");
+
         // define and initialize drive motors
         one = hwMap.get(DcMotorEx.class, "one");
         two = hwMap.get(DcMotorEx.class, "two");
