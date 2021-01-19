@@ -74,6 +74,7 @@ public class Drive extends OpMode {
         telemetry.addData("Velocity: ", "" + velocity);
         telemetry.addData("Blue: ", "" + robot.color.blue());
         telemetry.addData("Gyro: ", "X:" + robot.gyro.rawX() + " Y:" + robot.gyro.rawY() + " Z:" + robot.gyro.rawZ());
+        telemetry.addData("Rotation: ", "" + robot.gyro.getRotationFraction());
         telemetry.update();
     }
 }

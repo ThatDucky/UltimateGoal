@@ -12,6 +12,13 @@ public class Auto extends LinearOpMode {
     @Override
     public void runOpMode(){
             robot.init(hardwareMap);
+            robot.setMode(2);
+            robot.gyro.calibrate();
+            while(robot.gyro.isCalibrating()){
+                telemetry.addData("Gyro: ", "Calibrating...");
+                telemetry.update();
+            }
+            double home = robot.gyro.getRotationFraction();
             telemetry.addData("Status: ", "Ready");
             telemetry.update(); //setup telemetry and call it
             waitForStart();
@@ -24,7 +31,7 @@ public class Auto extends LinearOpMode {
             robot.fWheelPower(robot.powerShot);
             sleep(3000);
             robot.launcher.setPosition(robot.fire);
-            sleep(1000);
+            sleep(800);
             robot.launcher.setPosition(robot.rest);
             robot.fWheelPower(0);
     }
