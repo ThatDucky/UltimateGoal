@@ -2,6 +2,12 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+
 import java.lang.Math;
 
 @Autonomous(name = "AutoTest", group = "Auto")
@@ -13,14 +19,16 @@ public class AutoTest extends LinearOpMode{
     public void runOpMode(){
         robot.init(hardwareMap);
 
+
         while(!robot.imu.isGyroCalibrated()){
             telemetry.addData("Gyro: ", "Calibrating");
             telemetry.update();
         }
+        telemetry.addData("Gyro: ", "Ready");
         waitForStart();
 
         while(opModeIsActive()){
-            telemetry.addData("Gyro: ", "" + robot.imu.getAngularOrientation());
+            telemetry.addData("Gyro: ", "" + robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).firstAngle + " " + robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).secondAngle);
             telemetry.update();
         }
     }

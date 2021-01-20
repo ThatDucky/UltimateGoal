@@ -15,8 +15,6 @@ public class Hardware {
     double ticks = 28; //REV-41-129 has 28 ticks per cycle
     double ticksPerCentimeters = (ticks / (diameter * 3.1415)) * 12; //12 is for the gear reduction
 
-    Orientation angle = new Orientation();
-
     //flywheel variables
     double highGoal = 0.92;
     double powerShot = 0.85;
