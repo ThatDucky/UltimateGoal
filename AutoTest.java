@@ -11,7 +11,18 @@ public class AutoTest extends LinearOpMode{
 
     @Override
     public void runOpMode(){
+        robot.init(hardwareMap);
 
+        while(!robot.imu.isGyroCalibrated()){
+            telemetry.addData("Gyro: ", "Calibrating");
+            telemetry.update();
+        }
+        waitForStart();
+
+        while(opModeIsActive()){
+            telemetry.addData("Gyro: ", "" + robot.imu.getAngularOrientation());
+            telemetry.update();
+        }
     }
 
     public void goToPosition(int decimeters, double power){

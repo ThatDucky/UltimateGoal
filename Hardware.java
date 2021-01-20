@@ -1,11 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import java.lang.Math;
 
 public class Hardware {
@@ -14,13 +15,15 @@ public class Hardware {
     double ticks = 28; //REV-41-129 has 28 ticks per cycle
     double ticksPerCentimeters = (ticks / (diameter * 3.1415)) * 12; //12 is for the gear reduction
 
+    Orientation angle = new Orientation();
+
     //flywheel variables
     double highGoal = 0.92;
     double powerShot = 0.85;
 
     //Sensors
     public ColorSensor color = null;
-    public GyroSensor gyro = null;
+    public BNO055IMU imu = null;
 
     //naming robot Drive motor
     public DcMotorEx one = null;
@@ -46,8 +49,13 @@ public class Hardware {
     //initialize standard hardware interface
     public void init(HardwareMap hwMap){
         //sensor setup
+        imu = hwMap.get(BNO055IMU.class, "imu");
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        parameters.mode = BNO055IMU.SensorMode.IMU;
+        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        imu.initialize(parameters);
+
         color = hwMap.get(ColorSensor.class, "color");
-        gyro = hwMap.get(GyroSensor.class, "gyro");
 
         // define and initialize drive motors
         one = hwMap.get(DcMotorEx.class, "one");

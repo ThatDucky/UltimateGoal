@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.graphics.drawable.GradientDrawable;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import java.lang.Math;
@@ -13,32 +15,34 @@ public class Auto extends LinearOpMode {
     public void runOpMode(){
             robot.init(hardwareMap);
             robot.setMode(2);
-            robot.gyro.calibrate();
-            while(robot.gyro.isCalibrating()){
+            while(!robot.imu.isGyroCalibrated()) {
                 telemetry.addData("Gyro: ", "Calibrating...");
                 telemetry.update();
             }
-            double home = robot.gyro.getRotationFraction();
+
             telemetry.addData("Status: ", "Ready");
             telemetry.update(); //setup telemetry and call it
             waitForStart();
 
-            robot.setPower(0.20, 0.20);
+            robot.setPower(0.15, 0.15);
             while(robot.color.blue() < 60){
-                sleep(100);
+                sleep(10);
             }
             robot.setPower(0, 0);
+            goToPosition(-1,0.2);
             robot.fWheelPower(robot.powerShot);
-            sleep(3000);
+            while(robot.fWheelOne.getVelocity() < 2060 || robot.fWheelTwo.getVelocity() < 2060){
+                sleep(100);
+            }
             robot.launcher.setPosition(robot.fire);
             sleep(800);
             robot.launcher.setPosition(robot.rest);
             robot.fWheelPower(0);
+            sleep(1000);
     }
 
     public void goToPosition(int decimeters, double power){
         //go through the steps to get to target distance
-        decimeters *= -1;
         robot.setTargetPosition(decimeters);
         telemetry.addData("Running To Position", robot.getTargetPosition());
         telemetry.update();
