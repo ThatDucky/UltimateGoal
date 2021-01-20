@@ -16,26 +16,34 @@ public class AutoTest extends LinearOpMode{
     public void runOpMode(){
         robot.init(hardwareMap);
         robot.setMode(2);
-
-        while(!robot.imu.isGyroCalibrated()){
-            telemetry.addData("Gyro: ", "Calibrating");
-            telemetry.update();
-        }
         telemetry.addData("Gyro: ", "Ready");
-        float homeX = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).firstAngle;
+        telemetry.update();
+        float homeZ = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle;
         waitForStart();
 
-        //turnTo(homeX);
-        while(opModeIsActive()){
-            telemetry.addData("Gyro: ", "X:" + robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).firstAngle + " Y:" + robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).secondAngle);
-            telemetry.update();
-        }
+        turnTo(90);
+        telemetry.addData("Gyro: ", "" + robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
+        telemetry.update();
+        sleep(5000);
+        turnTo(homeZ);
+        telemetry.addData("Gyro: ", "" + robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
+        telemetry.update();
+        sleep(5000);
     }
 
-    public void turnTo(float X){
-        while(robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).firstAngle != X){
-            robot.setPower(0.20,-0.20);
-            sleep(100);
+    public void turnTo(float point){
+        for(int i = 0; i < 4; i++){
+            if(point > robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle){
+                while ((point - 2) > robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle) {
+                    robot.setPower(-0.12, 0.12);
+                    sleep(10);
+                }
+            }else if(point < robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle){
+                while ((point + 2) < robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle) {
+                    robot.setPower(0.12, -0.12);
+                    sleep(10);
+                }
+            }
         }
         robot.setPower(0,0);
     }

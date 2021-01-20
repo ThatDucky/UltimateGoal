@@ -14,42 +14,72 @@ public class Auto extends LinearOpMode {
 
     @Override
     public void runOpMode(){
-            robot.init(hardwareMap);
-            robot.setMode(2);
-            while(!robot.imu.isGyroCalibrated()) {
-                telemetry.addData("Gyro: ", "Calibrating...");
-                telemetry.update();
-            }
-            float homeX = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).firstAngle;
+        robot.init(hardwareMap);
+        robot.setMode(0); //sets motors to reset
+        float home = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle;
+        telemetry.addData("Status: ", "Ready");
+        telemetry.update(); //setup telemetry and call it
+        waitForStart();
 
-            telemetry.addData("Status: ", "Ready");
-            telemetry.update(); //setup telemetry and call it
-            waitForStart();
-
-            robot.setPower(0.15, 0.15);
-            while(robot.color.blue() < 60){
-                sleep(10);
-            }
-            robot.setPower(0, 0);
-            goToPosition(-1,0.2);
-            robot.fWheelPower(robot.powerShot);
-            while(robot.fWheelOne.getVelocity() < 2060 || robot.fWheelTwo.getVelocity() < 2060){
-                sleep(100);
-            }
-            turnTo(homeX);
-            robot.launcher.setPosition(robot.fire);
-            sleep(800);
-            robot.launcher.setPosition(robot.rest);
-            robot.fWheelPower(0);
-            sleep(1000);
+        goToLine();
+        turnTo(home);
+        goToPosition(-1,0.2);
+        fire(robot.powerShot);
+        sleep(1000);
+        turnTo(-10);
+        sleep(500);
+        fire(robot.powerShot);
+        sleep(1000);
+        turnTo(-20);
+        sleep(500);
+        fire(robot.powerShot);
+        sleep(1000);
+        turnTo(home);
+        sleep(500);
+        goToPosition(-10,0.35);
     }
 
-    public void turnTo(float homeX){
-        while(robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).firstAngle != homeX){
-            robot.setPower(0.20,-0.20);
+    public void fire(double power){
+        //spins up the fly wheel and fires the servo then resets everything
+        robot.fWheelPower(power);
+        while(robot.fWheelOne.getVelocity() < 2060 || robot.fWheelTwo.getVelocity() < 2060){
             sleep(100);
         }
+        sleep(500);
+        robot.launcher.setPosition(robot.fire);
+        sleep(800);
+        robot.launcher.setPosition(robot.rest);
+        robot.fWheelPower(0);
+    }
+
+    public void goToLine(){
+        //moves forward until the color sensor fine the line
+        robot.setMode(2);
+        robot.setPower(0.15, 0.15);
+        while(robot.color.blue() < 60){
+            sleep(10);
+        }
+        robot.setPower(0, 0);
+    }
+
+    public void turnTo(float point){
+        //rotates the robot until the gyro fines the defined point then checks a few times
+        robot.setMode(2);
+        for(int i = 0; i < 4; i++){
+            if(point > robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle){
+                while ((point - 2) > robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle) {
+                    robot.setPower(-0.12, 0.12);
+                    sleep(10);
+                }
+            }else if(point < robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle){
+                while ((point + 2) < robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle) {
+                    robot.setPower(0.12, -0.12);
+                    sleep(10);
+                }
+            }
+        }
         robot.setPower(0,0);
+        robot.setMode(0);
     }
 
     public void goToPosition(int decimeters, double power){

@@ -58,6 +58,7 @@ public class Drive extends OpMode {
             //sets the  servo to fire
             robot.launcher.setPosition(robot.fire);
         }else{
+
             //resets the servo
             robot.launcher.setPosition(robot.rest);
         }
@@ -65,8 +66,8 @@ public class Drive extends OpMode {
         //set up the display telemetry
         telemetry.addData("Left Stick Position: ", gamepad1.left_stick_x + " " + gamepad1.left_stick_y);
         telemetry.addData("Velocity: ", "" + velocity);
-        telemetry.addData("ARGB: ", "" + robot.color.argb());
-        telemetry.addData("Gyro: ", "X:" + robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).firstAngle + " Y:" + robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).secondAngle);
+        telemetry.addData("Alpha: ", "" + robot.color.alpha());
+        telemetry.addData("Gyro: ", "" + robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
         telemetry.update();
     }
 }
