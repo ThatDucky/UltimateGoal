@@ -1,14 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
-import android.graphics.drawable.GradientDrawable;
-
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-
 import java.lang.Math;
 
 @Autonomous(name = "Auto", group = "Auto")
@@ -25,7 +21,6 @@ public class Auto extends LinearOpMode {
                 telemetry.update();
             }
             float homeX = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).firstAngle;
-            float homeY = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).secondAngle;
 
             telemetry.addData("Status: ", "Ready");
             telemetry.update(); //setup telemetry and call it
@@ -41,7 +36,7 @@ public class Auto extends LinearOpMode {
             while(robot.fWheelOne.getVelocity() < 2060 || robot.fWheelTwo.getVelocity() < 2060){
                 sleep(100);
             }
-            turnHome(homeX);
+            turnTo(homeX);
             robot.launcher.setPosition(robot.fire);
             sleep(800);
             robot.launcher.setPosition(robot.rest);
@@ -49,13 +44,9 @@ public class Auto extends LinearOpMode {
             sleep(1000);
     }
 
-    public void turnHome(float homeX){
+    public void turnTo(float homeX){
         while(robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).firstAngle != homeX){
             robot.setPower(0.20,-0.20);
-            sleep(100);
-        }
-        while(robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).firstAngle != homeX){
-            robot.setPower(-0.15,0.15);
             sleep(100);
         }
         robot.setPower(0,0);

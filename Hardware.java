@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import java.lang.Math;
 
 public class Hardware {
@@ -73,6 +72,7 @@ public class Hardware {
         two.setDirection(DcMotorEx.Direction.FORWARD); //left Back
         three.setDirection(DcMotorEx.Direction.REVERSE); //right Front
         four.setDirection(DcMotorEx.Direction.REVERSE); //right Back
+
         fWheelOne.setDirection(DcMotorEx.Direction.FORWARD); //right flywheel
         fWheelTwo.setDirection(DcMotorEx.Direction.REVERSE); //left flywheel
 
@@ -106,6 +106,7 @@ public class Hardware {
         three.setTargetPosition(three.getCurrentPosition() + target);
         four.setTargetPosition(four.getCurrentPosition() + target);
     }
+
     public String getTargetPosition(){
         //returns a string of all the target positions of the motors
         return one.getTargetPosition() + " " + two.getTargetPosition() + " " + three.getTargetPosition() + " " + four.getTargetPosition();
