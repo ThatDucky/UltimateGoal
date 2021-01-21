@@ -15,8 +15,8 @@ public class Hardware {
     double ticksPerCentimeters = (ticks / (diameter * 3.1415)) * 12; //12 is for the gear reduction
 
     //flywheel variables
-    double highGoal = 0.92;
-    double powerShot = 0.85;
+    double highGoal = 2200;
+    double powerShot = 2060;
 
     //Sensors
     public ColorSensor color = null;
@@ -86,8 +86,8 @@ public class Hardware {
 
     public void fWheelPower(double power){
         //sets fly wheels power
-        fWheelOne.setPower(power);
-        fWheelTwo.setPower(power);
+        fWheelOne.setVelocity(power);
+        fWheelTwo.setVelocity(power);
     }
 
     public void setPower(double lPower,double rPower){

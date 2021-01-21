@@ -28,7 +28,7 @@ public class Drive extends OpMode {
     public void loop() {
         double deadZone = 0.10; //controller dead zone
         double velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity
-        double xOffSet = 0.40; //x off set for movement
+        double xOffSet = 0.45; //x off set for movement
 
         //gets x and y values of the game pad and offsets the y value by a percent of the x
         double left = (gamepad1.left_stick_y * -1) + (gamepad1.left_stick_x * xOffSet);
@@ -54,11 +54,10 @@ public class Drive extends OpMode {
             robot.fWheelPower(0);
         }
 
-        if(gamepad1.right_trigger > 0 && velocity >= 2000){
+        if(gamepad1.right_trigger > 0 && velocity >= 2060){
             //sets the  servo to fire
             robot.launcher.setPosition(robot.fire);
         }else{
-
             //resets the servo
             robot.launcher.setPosition(robot.rest);
         }
@@ -68,6 +67,6 @@ public class Drive extends OpMode {
         telemetry.addData("Velocity: ", "" + velocity);
         telemetry.addData("Alpha: ", "" + robot.color.alpha());
         telemetry.addData("Gyro: ", "" + robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
-        telemetry.update();
+        telemetry.update();//call the display telemetry
     }
 }

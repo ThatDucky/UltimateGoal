@@ -18,14 +18,14 @@ public class AutoTest extends LinearOpMode{
         robot.setMode(2);
         telemetry.addData("Gyro: ", "Ready");
         telemetry.update();
-        float homeZ = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle;
+        float home = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle;
         waitForStart();
 
         turnTo(90);
         telemetry.addData("Gyro: ", "" + robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
         telemetry.update();
         sleep(5000);
-        turnTo(homeZ);
+        turnTo(home);
         telemetry.addData("Gyro: ", "" + robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
         telemetry.update();
         sleep(5000);
