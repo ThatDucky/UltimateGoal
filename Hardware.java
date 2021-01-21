@@ -28,15 +28,15 @@ public class Hardware {
     public DcMotorEx three = null;
     public DcMotorEx four = null;
 
-    public DcMotorEx fWheelOne = null; //right
-    public DcMotorEx fWheelTwo = null; //left
+    public DcMotorEx fWheelOne = null; //left
+    public DcMotorEx fWheelTwo = null; //right
 
     //naming servos
     public Servo launcher = null;
 
     //servo vars
-    public double rest = 0.0;
-    public double fire = 0.45;
+    double rest = 0.0;
+    double fire = 0.45;
 
     //constructor
     public Hardware(){
