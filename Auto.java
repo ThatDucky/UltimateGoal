@@ -42,7 +42,9 @@ public class Auto extends LinearOpMode {
     public void fire(double power){
         //spins up the fly wheel and fires the servo then resets everything
         robot.fWheelPower(power);
-        while(robot.fWheelOne.getVelocity() < 2060 || robot.fWheelTwo.getVelocity() < 2060){
+        double velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity
+        while(velocity < power){
+            velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity update
             sleep(100);
         }
         sleep(500);
