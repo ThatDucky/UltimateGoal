@@ -54,7 +54,7 @@ public class Drive extends OpMode {
             robot.fWheelPower(0);
         }
 
-        if(gamepad1.right_trigger > 0 && (velocity >= robot.powerShot || velocity >= robot.highGoal)){
+        if(gamepad1.right_trigger > 0 && velocity >= robot.powerShot){
             //sets the  servo to fire
             robot.launcher.setPosition(robot.fire);
         }else{
