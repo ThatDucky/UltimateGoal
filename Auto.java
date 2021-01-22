@@ -16,25 +16,26 @@ public class Auto extends LinearOpMode {
     public void runOpMode(){
         robot.init(hardwareMap);
         robot.setMode(0); //sets motors to reset
+        double tPower = 0.13;
         float home = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle;
         telemetry.addData("Status: ", "Ready");
         telemetry.update(); //setup telemetry and call it
         waitForStart();
 
         goToLine();
-        turnTo(home);
+        turnTo(home, tPower);
         goToPosition(-1,0.2);
         fire(robot.powerShot);
         sleep(1000);
-        turnTo(-10);
+        turnTo(-10, tPower);
         sleep(500);
         fire(robot.powerShot);
         sleep(1000);
-        turnTo(-20);
+        turnTo(-20, tPower);
         sleep(500);
         fire(robot.powerShot);
         sleep(1000);
-        turnTo(home);
+        turnTo(home, tPower);
         sleep(500);
         goToPosition(-10,0.35);
     }
@@ -64,18 +65,18 @@ public class Auto extends LinearOpMode {
         robot.setPower(0, 0);
     }
 
-    public void turnTo(float point){
+    public void turnTo(float point, double power){
         //rotates the robot until the gyro fines the defined point then checks a few times
         robot.setMode(2);
         for(int i = 0; i < 4; i++){
             if(point > robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle){
                 while ((point - 2) > robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle) {
-                    robot.setPower(-0.12, 0.12);
+                    robot.setPower(power * -1, power);
                     sleep(10);
                 }
             }else if(point < robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle){
                 while ((point + 2) < robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle) {
-                    robot.setPower(0.12, -0.12);
+                    robot.setPower(power, power * -1);
                     sleep(10);
                 }
             }
