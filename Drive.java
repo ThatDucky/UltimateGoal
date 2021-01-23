@@ -34,29 +34,48 @@ public class Drive extends OpMode {
         double left = (gamepad1.left_stick_y * -1) + (gamepad1.left_stick_x * xOffSet);
         double right = (gamepad1.left_stick_y * -1) - (gamepad1.left_stick_x * xOffSet);
 
-        if(left > deadZone || left < (deadZone * -1) || right > deadZone || right < (deadZone * -1)){
+        if (left > deadZone || left < (deadZone * -1) || right > deadZone || right < (deadZone * -1)) {
             //passes power to the motor if the game pad is pushed farther than the dead zone in any direction
             robot.setPower(left, right);
-        }else{
+        } else {
             //kills power otherwise
-            robot.setPower(0,0);
+            robot.setPower(0, 0);
+        }
+
+        if (gamepad1.right_bumper) {
+            robot.autumn.setPower(-1.00);
+        } else if (gamepad1.b) {
+            robot.autumn.setPower(1.00);
+        } else {
+            robot.autumn.setPower(0);
+        }
+
+        if (gamepad1.right_stick_y > deadZone || gamepad1.right_stick_y < (deadZone * -1)) {
+            //passes power to the motor if the game pad is pushed farther than the dead zone
+            robot.fall.setPower(gamepad1.right_stick_y * -1);
+        } else {
+            //kills power otherwise
+            robot.fall.setPower(0);
         }
 
 
-        if(gamepad1.left_trigger > 0){
+        if (gamepad1.left_trigger > 0) {
             //set Fly Wheel To Spin Up if Left Trigger Is Held
             robot.fWheelPower(robot.highGoal);
-        }else if(gamepad1.left_bumper){
+        } else if (gamepad1.left_bumper) {
             //sets the fly wheel speed to the power shot goal if bummer is held
             robot.fWheelPower(robot.powerShot);
-        }else{
+        } else {
             //Reset fly wheel if left Trigger is not pressed
             robot.fWheelPower(0);
         }
 
-        if(gamepad1.right_trigger > 0 && velocity >= robot.powerShot){
+        if(gamepad1.right_trigger > 0 && velocity >= (robot.powerShot - 10)) {
             //sets the  servo to fire
             robot.launcher.setPosition(robot.fire);
+        }else if(gamepad1.right_trigger > 0 && velocity <= 10){
+            //sets the  servo to fire
+            robot.launcher.setPosition(robot.fire - 20);
         }else{
             //resets the servo
             robot.launcher.setPosition(robot.rest);
