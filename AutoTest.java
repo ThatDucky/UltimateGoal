@@ -9,7 +9,7 @@ import java.lang.Math;
 
 @Autonomous(name = "AutoTest", group = "Auto")
 
-public class AutoTest extends LinearOpMode{
+public class AutoTest extends LinearOpMode {
     Hardware robot = new Hardware();
 
     @Override
