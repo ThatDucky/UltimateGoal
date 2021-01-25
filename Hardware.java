@@ -32,8 +32,8 @@ public class Hardware {
     public DcMotorEx fWheelOne = null; //left
     public DcMotorEx fWheelTwo = null; //right
 
-    public DcMotor autumn = null;
-    public DcMotorEx fall = null;
+    public DcMotor lift = null;
+    public DcMotorEx arm = null;
 
     //naming servos
     public Servo launcher = null;
@@ -65,14 +65,14 @@ public class Hardware {
         four = hwMap.get(DcMotorEx.class, "four");
         fWheelOne = hwMap.get(DcMotorEx.class, "fWheelOne");
         fWheelTwo = hwMap.get(DcMotorEx.class, "fWheelTwo");
-        autumn = hwMap.get(DcMotor.class, "autumn");
-        fall = hwMap.get(DcMotorEx.class, "fall");
+        lift = hwMap.get(DcMotor.class, "autumn");
+        arm = hwMap.get(DcMotorEx.class, "fall");
 
         //set motor mode to reset encoders
         setMode(0);
         fWheelOne.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         fWheelTwo.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        fall.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         //set direction of the motors
         one.setDirection(DcMotorEx.Direction.FORWARD); //left Front
@@ -80,8 +80,8 @@ public class Hardware {
         three.setDirection(DcMotorEx.Direction.REVERSE); //right Front
         four.setDirection(DcMotorEx.Direction.REVERSE); //right Back
 
-        autumn.setDirection(DcMotorEx.Direction.FORWARD); //ramp
-        fall.setDirection(DcMotor.Direction.FORWARD); //arm
+        lift.setDirection(DcMotorEx.Direction.FORWARD); //ramp
+        arm.setDirection(DcMotor.Direction.FORWARD); //arm
 
         fWheelOne.setDirection(DcMotorEx.Direction.FORWARD); //right flywheel
         fWheelTwo.setDirection(DcMotorEx.Direction.REVERSE); //left flywheel
@@ -89,8 +89,8 @@ public class Hardware {
         //set all drive motors to zero power
         setPower(0,0);
         fWheelPower(0);
-        autumn.setPower(0);
-        fall.setPower(0);
+        lift.setPower(0);
+        arm.setPower(0);
 
         //define the Servos
         launcher = hwMap.get(Servo.class, "launcher");

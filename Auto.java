@@ -27,11 +27,11 @@ public class Auto extends LinearOpMode {
         goToPosition(-1,0.2);
         fire(robot.powerShot);
         sleep(1000);
-        turnTo(-10, tPower);
+        turnTo(-4, tPower);
         sleep(500);
         fire(robot.powerShot);
         sleep(1000);
-        turnTo(-20, tPower);
+        turnTo(-8, tPower);
         sleep(500);
         fire(robot.powerShot);
         sleep(1000);

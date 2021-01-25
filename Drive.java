@@ -43,19 +43,19 @@ public class Drive extends OpMode {
         }
 
         if (gamepad1.right_bumper) {
-            robot.autumn.setPower(-1.00);
+            robot.lift.setPower(-1.00);
         } else if (gamepad1.b) {
-            robot.autumn.setPower(1.00);
+            robot.lift.setPower(1.00);
         } else {
-            robot.autumn.setPower(0);
+            robot.lift.setPower(0);
         }
 
         if (gamepad1.right_stick_y > deadZone || gamepad1.right_stick_y < (deadZone * -1)) {
             //passes power to the motor if the game pad is pushed farther than the dead zone
-            robot.fall.setPower(gamepad1.right_stick_y * -1);
+            robot.arm.setPower(gamepad1.right_stick_y * -1);
         } else {
             //kills power otherwise
-            robot.fall.setPower(0);
+            robot.arm.setPower(0);
         }
 
 
