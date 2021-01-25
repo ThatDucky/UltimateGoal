@@ -26,7 +26,7 @@ public class Drive extends OpMode {
 
     @Override
     public void loop(){
-        double deadZone = 0.10; //controller dead zone
+        double deadZone = 0.13; //controller dead zone
         double velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity
         double xOffSet = 0.45; //x off set for movement
 
