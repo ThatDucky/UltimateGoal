@@ -36,10 +36,14 @@ public class Hardware {
 
     //naming servos
     public Servo launcher = null;
+    public Servo claw = null;
 
     //servo vars
     double rest = 0.0;
     double fire = 0.45;
+
+    double open = 0.0;
+    double closed = 0.45;
 
     //constructor
     public Hardware(){
@@ -93,6 +97,7 @@ public class Hardware {
 
         //define the Servos
         launcher = hwMap.get(Servo.class, "launcher");
+        claw = hwMap.get(Servo.class, "claw");
     }
 
     public void fWheelPower(double power){

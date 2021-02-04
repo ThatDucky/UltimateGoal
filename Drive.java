@@ -55,12 +55,17 @@ public class Drive extends OpMode {
 
         if(gamepad1.right_stick_y > deadZone || gamepad1.right_stick_y < (deadZone * -1)){
             //passes power to the motor if the game pad is pushed farther than the dead zone
-            robot.arm.setPower(gamepad1.right_stick_y * -1);
+            robot.arm.setPower(gamepad1.right_stick_y * -0.20);
         }else{
             //kills power otherwise
             robot.arm.setPower(0);
         }
 
+        if(gamepad1.right_stick_x > deadZone){
+            robot.claw.setPosition(robot.closed);
+        }else if(gamepad1.right_stick_x < (deadZone * -1)){
+            robot.claw.setPosition(robot.open);
+        }
 
         if(gamepad1.left_trigger > 0){
             //set Fly Wheel To Spin Up if Left Trigger Is Held
