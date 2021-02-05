@@ -22,20 +22,31 @@ public class AutoTest extends LinearOpMode {
         float home = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle;
         waitForStart();
 
-        telemetry.addData("Gyro: ", "" + robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
+        robot.pattern = robot.pattern.next();
+        robot.revBlinkinLedDriver.setPattern(robot.pattern);
+        telemetry.addData("Blinkin: ", robot.pattern.toString());
         telemetry.update();
-        turnTo(90, tPower);
-        telemetry.addData("Gyro: ", "" + robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
+        sleep(3000);
+        robot.pattern = robot.pattern.next();
+        robot.revBlinkinLedDriver.setPattern(robot.pattern);
+        telemetry.addData("Blinkin: ", robot.pattern.toString());
         telemetry.update();
-        sleep(4000);
-        turnTo(-90, tPower);
-        telemetry.addData("Gyro: ", "" + robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
+        sleep(3000);
+        robot.pattern = robot.pattern.next();
+        robot.revBlinkinLedDriver.setPattern(robot.pattern);
+        telemetry.addData("Blinkin: ", robot.pattern.toString());
         telemetry.update();
-        sleep(4000);
-        turnTo(home, tPower);
-        telemetry.addData("Gyro: ", "" + robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
+        sleep(3000);
+        robot.pattern = robot.pattern.next();
+        robot.revBlinkinLedDriver.setPattern(robot.pattern);
+        telemetry.addData("Blinkin: ", robot.pattern.toString());
         telemetry.update();
-        sleep(4000);
+        sleep(3000);
+        robot.pattern = robot.pattern.next();
+        robot.revBlinkinLedDriver.setPattern(robot.pattern);
+        telemetry.addData("Blinkin: ", robot.pattern.toString());
+        telemetry.update();
+        sleep(5000);
     }
 
     public void turnTo(float point, double power){

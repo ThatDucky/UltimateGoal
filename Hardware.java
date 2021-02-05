@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -21,6 +22,9 @@ public class Hardware {
     //Sensors
     public ColorSensor color = null;
     public BNO055IMU imu = null;
+
+    public RevBlinkinLedDriver revBlinkinLedDriver;
+    public RevBlinkinLedDriver.BlinkinPattern pattern;
 
     //naming robot Drive motor
     public DcMotorEx one = null;
@@ -58,6 +62,10 @@ public class Hardware {
         parameters.mode = BNO055IMU.SensorMode.IMU;
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         imu.initialize(parameters);
+
+        revBlinkinLedDriver = hwMap.get(RevBlinkinLedDriver.class, "led");
+        pattern = RevBlinkinLedDriver.BlinkinPattern.RAINBOW_RAINBOW_PALETTE;
+        revBlinkinLedDriver.setPattern(pattern);
 
         color = hwMap.get(ColorSensor.class, "color");
 

@@ -81,12 +81,20 @@ public class Drive extends OpMode {
         if(gamepad1.right_trigger > 0 && velocity >= (robot.powerShot - 10)){
             //sets the  servo to fire
             robot.launcher.setPosition(robot.fire);
-        }else if(gamepad1.right_trigger > 0 && velocity <= 10){
+        }else if(gamepad1.right_trigger > 0 && velocity <= 150.0){
             //sets the  servo to fire
-            robot.launcher.setPosition(robot.fire - 20);
+            robot.launcher.setPosition(robot.fire);
         }else{
             //resets the servo
             robot.launcher.setPosition(robot.rest);
+        }
+
+        if(gamepad1.dpad_right){
+            robot.pattern = robot.pattern.next();
+            robot.revBlinkinLedDriver.setPattern(robot.pattern);
+        }else if(gamepad1.dpad_left){
+            robot.pattern = robot.pattern.previous();
+            robot.revBlinkinLedDriver.setPattern(robot.pattern);
         }
 
         //set up the display telemetry
@@ -94,6 +102,7 @@ public class Drive extends OpMode {
         telemetry.addData("Velocity: ", "" + velocity);
         telemetry.addData("Blue: ", "" + robot.color.blue());
         telemetry.addData("Gyro: ", "" + robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
+        telemetry.addData("LED: ", robot.pattern.toString());
         telemetry.update();//call the display telemetry
     }
 }
