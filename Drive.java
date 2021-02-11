@@ -89,10 +89,20 @@ public class Drive extends OpMode {
             robot.launcher.setPosition(robot.rest);
         }
 
+        if(gamepad1.x){
+            //push/shove the ramp
+            robot.shove.setPosition(robot.shoved);
+        }else{
+            //otherwise rest the servo
+            robot.shove.setPosition(robot.lay);
+        }
+
         if(gamepad1.dpad_right){
+            //change the rev light
             robot.pattern = robot.pattern.next();
             robot.revBlinkinLedDriver.setPattern(robot.pattern);
         }else if(gamepad1.dpad_left){
+            //change to the previous color pattern
             robot.pattern = robot.pattern.previous();
             robot.revBlinkinLedDriver.setPattern(robot.pattern);
         }
@@ -100,7 +110,7 @@ public class Drive extends OpMode {
         //set up the display telemetry
         telemetry.addData("Left Stick Position: ", gamepad1.left_stick_x + " " + gamepad1.left_stick_y);
         telemetry.addData("Velocity: ", "" + velocity);
-        telemetry.addData("Blue: ", "" + robot.color.blue());
+        telemetry.addData("ARGB: ", "" + robot.color.argb());
         telemetry.addData("Gyro: ", "" + robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
         telemetry.addData("LED: ", robot.pattern.toString());
         telemetry.update();//call the display telemetry
