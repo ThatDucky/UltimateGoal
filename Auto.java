@@ -24,7 +24,7 @@ public class Auto extends LinearOpMode {
 
         goToLine();
         turnTo(home, tPower);
-        goToPosition(-1,0.2);
+        goToPosition(-1,0.25);
         fire(robot.powerShot);
         sleep(1000);
         turnTo(-4, tPower);
@@ -37,7 +37,7 @@ public class Auto extends LinearOpMode {
         sleep(1000);
         turnTo(home, tPower);
         sleep(500);
-        goToPosition(-10,0.35);
+        goToPosition(-10,0.40);
     }
 
     public void fire(double power){
