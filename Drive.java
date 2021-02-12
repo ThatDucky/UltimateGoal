@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -16,6 +17,9 @@ public class Drive extends OpMode {
     public void init(){
         robot.init(hardwareMap);
         robot.setMode(2); //set to run using encoders
+        //rev color
+        robot.pattern = RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE;
+        robot.revBlinkinLedDriver.setPattern(robot.pattern);
     }
 
     @Override
@@ -29,6 +33,9 @@ public class Drive extends OpMode {
         double deadZone = 0.13; //controller dead zone
         double velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity
         double xOffSet = 0.45; //x off set for movement
+
+        //lights default color
+        robot.pattern = RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE;
 
         //gets x and y values of the game pad and offsets the y value by a percent of the x
         double left = (gamepad1.left_stick_y * -1) + (gamepad1.left_stick_x * xOffSet);
@@ -45,9 +52,13 @@ public class Drive extends OpMode {
         if(gamepad1.right_bumper){
             //spins the motor to pick up rings
             robot.lift.setPower(-1.00);
+            //rev color
+            robot.pattern = RevBlinkinLedDriver.BlinkinPattern.BLUE;
         }else if(gamepad1.b){
             //reverse the motor to unstuck rings
             robot.lift.setPower(1.00);
+            //rev color
+            robot.pattern = RevBlinkinLedDriver.BlinkinPattern.BREATH_BLUE;
         }else{
             //kills otherwise
             robot.lift.setPower(0);
@@ -55,7 +66,9 @@ public class Drive extends OpMode {
 
         if(gamepad1.right_stick_y > deadZone || gamepad1.right_stick_y < (deadZone * -1)){
             //passes power to the motor if the game pad is pushed farther than the dead zone
-            robot.arm.setPower(gamepad1.right_stick_y * -0.20);
+            robot.arm.setPower(gamepad1.right_stick_y * -0.15);
+            //rev color
+            robot.pattern = RevBlinkinLedDriver.BlinkinPattern.BLUE_VIOLET;
         }else{
             //kills power otherwise
             robot.arm.setPower(0);
@@ -70,9 +83,13 @@ public class Drive extends OpMode {
         if(gamepad1.left_trigger > 0){
             //set Fly Wheel To Spin Up if Left Trigger Is Held
             robot.fWheelPower(robot.highGoal);
+            //rev color
+            robot.pattern = RevBlinkinLedDriver.BlinkinPattern.RED;
         }else if(gamepad1.left_bumper){
             //sets the fly wheel speed to the power shot goal if bummer is held
             robot.fWheelPower(robot.powerShot);
+            //rev color
+            robot.pattern = RevBlinkinLedDriver.BlinkinPattern.BREATH_RED;
         }else{
             //Reset fly wheel if left Trigger is not pressed
             robot.fWheelPower(0);
@@ -81,7 +98,9 @@ public class Drive extends OpMode {
         if(gamepad1.right_trigger > 0 && velocity >= (robot.powerShot - 10)){
             //sets the  servo to fire
             robot.launcher.setPosition(robot.fire);
-        }else if(gamepad1.right_trigger > 0 && velocity <= 150.0){
+            //rev color
+            robot.pattern = RevBlinkinLedDriver.BlinkinPattern.STROBE_RED;
+        }else if(gamepad1.right_trigger > 0 && velocity <= 100.0){
             //sets the  servo to fire
             robot.launcher.setPosition(robot.fire);
         }else{
@@ -92,25 +111,20 @@ public class Drive extends OpMode {
         if(gamepad1.x){
             //push/shove the ramp
             robot.shove.setPosition(robot.shoved);
+            //rev color
+            robot.pattern = RevBlinkinLedDriver.BlinkinPattern.BLUE;
         }else{
             //otherwise rest the servo
             robot.shove.setPosition(robot.lay);
         }
 
-        if(gamepad1.dpad_right){
-            //change the rev light
-            robot.pattern = robot.pattern.next();
-            robot.revBlinkinLedDriver.setPattern(robot.pattern);
-        }else if(gamepad1.dpad_left){
-            //change to the previous color pattern
-            robot.pattern = robot.pattern.previous();
-            robot.revBlinkinLedDriver.setPattern(robot.pattern);
-        }
+        //Rev lights
+        robot.revBlinkinLedDriver.setPattern(robot.pattern);
 
         //set up the display telemetry
         telemetry.addData("Left Stick Position: ", gamepad1.left_stick_x + " " + gamepad1.left_stick_y);
         telemetry.addData("Velocity: ", "" + velocity);
-        telemetry.addData("ARGB: ", "" + robot.color.argb());
+        telemetry.addData("Green: ", "" + robot.color.green());
         telemetry.addData("Gyro: ", "" + robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
         telemetry.addData("LED: ", robot.pattern.toString());
         telemetry.update();//call the display telemetry

@@ -16,8 +16,8 @@ public class Hardware {
     double ticksPerCentimeters = (ticks / (diameter * 3.1415)) * 12; //12 is for the gear reduction
 
     //flywheel variables
-    double highGoal = 2200;
-    double powerShot = 2060;
+    double highGoal = 1900;
+    double powerShot = 1800;
 
     //Sensors
     public ColorSensor color = null;
@@ -44,14 +44,14 @@ public class Hardware {
     public Servo shove = null;
 
     //servo vars
-    double rest = 0.0;
+    double rest = -0.15;
     double fire = 0.45;
 
     double open = 0.0;
-    double closed = 0.45;
+    double closed = 0.70;
 
-    double shoved = 0.60;
-    double lay = 0.00;
+    double shoved = 0.10;
+    double lay = 0.95;
 
     //constructor
     public Hardware(){
@@ -68,7 +68,7 @@ public class Hardware {
         imu.initialize(parameters);
 
         revBlinkinLedDriver = hwMap.get(RevBlinkinLedDriver.class, "led");
-        pattern = RevBlinkinLedDriver.BlinkinPattern.RAINBOW_RAINBOW_PALETTE;
+        pattern = RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE;
         revBlinkinLedDriver.setPattern(pattern);
 
         color = hwMap.get(ColorSensor.class, "color");
