@@ -66,7 +66,7 @@ public class Drive extends OpMode {
 
         if(gamepad1.right_stick_y > deadZone || gamepad1.right_stick_y < (deadZone * -1)){
             //passes power to the motor if the game pad is pushed farther than the dead zone
-            robot.arm.setPower(gamepad1.right_stick_y * -0.15);
+            robot.arm.setPower(gamepad1.right_stick_y * -0.25);
             //rev color
             robot.pattern = RevBlinkinLedDriver.BlinkinPattern.BLUE_VIOLET;
         }else{
