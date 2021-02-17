@@ -37,7 +37,7 @@ public class Auto extends LinearOpMode {
         sleep(1000);
         turnTo(home, tPower);
         sleep(500);
-        goToPosition(-10,0.40);
+        goToPosition(2,0.25);
     }
 
     public void fire(double power){
@@ -48,7 +48,9 @@ public class Auto extends LinearOpMode {
             velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity update
             sleep(100);
         }
-        sleep(500);
+        while(velocity > (power + 10)){
+            sleep(100);
+        }
         robot.launcher.setPosition(robot.fire);
         sleep(800);
         robot.launcher.setPosition(robot.rest);
@@ -59,10 +61,10 @@ public class Auto extends LinearOpMode {
         //moves forward until the color sensor fine the line
         robot.setMode(2);
         robot.setPower(0.15, 0.15);
-        while(robot.color.blue() < 60){
+        while(robot.color.blue() < 15 && robot.color.green() < 15 && robot.color.red() < 15){
             sleep(10);
         }
-        robot.setPower(0, 0);
+        robot.setPower(0,0);
     }
 
     public void turnTo(float point, double power){

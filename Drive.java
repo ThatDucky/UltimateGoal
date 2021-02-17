@@ -95,11 +95,11 @@ public class Drive extends OpMode {
             robot.fWheelPower(0);
         }
 
-        if(gamepad1.right_trigger > 0 && velocity >= (robot.powerShot - 10)){
+        if(gamepad1.right_trigger > 0 && velocity >= (robot.powerShot - 15) && velocity <= (robot.highGoal + 15)){
             //sets the  servo to fire
             robot.launcher.setPosition(robot.fire);
             //rev color
-            robot.pattern = RevBlinkinLedDriver.BlinkinPattern.STROBE_RED;
+            robot.pattern = RevBlinkinLedDriver.BlinkinPattern.SHOT_RED;
         }else if(gamepad1.right_trigger > 0 && velocity <= 100.0){
             //sets the  servo to fire
             robot.launcher.setPosition(robot.fire);

@@ -17,7 +17,7 @@ public class Hardware {
 
     //flywheel variables
     double highGoal = 1900;
-    double powerShot = 1800;
+    double powerShot = 1750;
 
     //Sensors
     public ColorSensor color = null;
