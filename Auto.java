@@ -2,6 +2,9 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -16,28 +19,39 @@ public class Auto extends LinearOpMode {
     public void runOpMode(){
         robot.init(hardwareMap);
         robot.setMode(0); //sets motors to reset
-        double tPower = 0.13;
+        robot.claw.setPosition(robot.closed);
+        robot.arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         float home = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle;
         telemetry.addData("Status: ", "Ready");
         telemetry.update(); //setup telemetry and call it
         waitForStart();
 
-        goToLine();
-        turnTo(home, tPower);
-        goToPosition(-1,0.25);
-        fire(robot.powerShot);
-        sleep(1000);
-        turnTo(-4, tPower);
-        sleep(500);
-        fire(robot.powerShot);
-        sleep(1000);
-        turnTo(-8, tPower);
-        sleep(500);
-        fire(robot.powerShot);
-        sleep(1000);
-        turnTo(home, tPower);
-        sleep(500);
-        goToPosition(2,0.25);
+        goToLine(0.20);
+        turnTo(-90, 0.35);
+        goToPosition(2, 0.35);
+        turnTo(home,0.13);
+        goToPosition(0.5, 0.35);
+        armToPosition(0);
+        robot.claw.setPosition(robot.open);
+        goToPosition(-3,0.35);
+        armToPosition(2);
+        robot.claw.setPosition(robot.closed);
+        turnTo(home,0.13);
+        fire(robot.highGoal);
+        goToPosition(1.5,0.5);
+        robot.shove.setPosition(robot.shoved);
+    }
+
+    public void armToPosition(int pos){
+        if(pos == 1){
+            robot.arm.setPower(0.25);
+        }else if(pos == 2){
+            robot.arm.setPower(0.17);
+        }else{
+            robot.arm.setPower(-0.25);
+        }
+        sleep(2500);
+        robot.arm.setPower(0);
     }
 
     public void fire(double power){
@@ -49,18 +63,28 @@ public class Auto extends LinearOpMode {
             sleep(100);
         }
         while(velocity > (power + 10)){
+            velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity update
             sleep(100);
         }
+        sleep(250);
         robot.launcher.setPosition(robot.fire);
-        sleep(800);
+        sleep(1000);
+        robot.launcher.setPosition(robot.rest);
+        sleep(1000);
+        robot.launcher.setPosition(robot.fire);
+        sleep(1000);
+        robot.launcher.setPosition(robot.rest);
+        sleep(1000);
+        robot.launcher.setPosition(robot.fire);
+        sleep(1000);
         robot.launcher.setPosition(robot.rest);
         robot.fWheelPower(0);
     }
 
-    public void goToLine(){
-        //moves forward until the color sensor fine the line
+    public void goToLine(double power){
+        //moves forward until the color sensor fine the white line
         robot.setMode(2);
-        robot.setPower(0.15, 0.15);
+        robot.setPower(power, power);
         while(robot.color.blue() < 15 && robot.color.green() < 15 && robot.color.red() < 15){
             sleep(10);
         }
@@ -87,19 +111,18 @@ public class Auto extends LinearOpMode {
         robot.setMode(0);
     }
 
-    public void goToPosition(int decimeters, double power){
+    public void goToPosition(double decimeters, double power){
         //go through the steps to get to target distance
         robot.setTargetPosition(decimeters);
         telemetry.addData("Running To Position", robot.getTargetPosition());
         telemetry.update();
         robot.setMode(1);
         robot.setPower(power, power);
-        while(robot.isBusy()){
+        while(robot.one.isBusy()){
             sleep(10);
         }
         robot.setPower(0,0);
         telemetry.addData("Running To Position", "Done");
         telemetry.update();
-        robot.setMode(0);
     }
 }

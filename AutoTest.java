@@ -2,6 +2,9 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -22,31 +25,23 @@ public class AutoTest extends LinearOpMode {
         float home = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle;
         waitForStart();
 
-        robot.pattern = robot.pattern.next();
-        robot.revBlinkinLedDriver.setPattern(robot.pattern);
-        telemetry.addData("Blinkin: ", robot.pattern.toString());
-        telemetry.update();
+        armToPosition(0);
+        armToPosition(0);
         sleep(3000);
-        robot.pattern = robot.pattern.next();
-        robot.revBlinkinLedDriver.setPattern(robot.pattern);
-        telemetry.addData("Blinkin: ", robot.pattern.toString());
-        telemetry.update();
-        sleep(3000);
-        robot.pattern = robot.pattern.next();
-        robot.revBlinkinLedDriver.setPattern(robot.pattern);
-        telemetry.addData("Blinkin: ", robot.pattern.toString());
-        telemetry.update();
-        sleep(3000);
-        robot.pattern = robot.pattern.next();
-        robot.revBlinkinLedDriver.setPattern(robot.pattern);
-        telemetry.addData("Blinkin: ", robot.pattern.toString());
-        telemetry.update();
-        sleep(3000);
-        robot.pattern = robot.pattern.next();
-        robot.revBlinkinLedDriver.setPattern(robot.pattern);
-        telemetry.addData("Blinkin: ", robot.pattern.toString());
-        telemetry.update();
-        sleep(5000);
+        armToPosition(1);
+        armToPosition(1);
+    }
+
+    public void armToPosition(int pos){
+        if(pos == 1){
+            robot.arm.setPower(0.25);
+            sleep(2500);
+            robot.arm.setPower(0);
+        }else{
+            robot.arm.setPower(-0.25);
+            sleep(2500);
+            robot.arm.setPower(0);
+        }
     }
 
     public void turnTo(float point, double power){

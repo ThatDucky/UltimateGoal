@@ -64,7 +64,7 @@ public class Drive extends OpMode {
             robot.lift.setPower(0);
         }
 
-        if(gamepad1.right_stick_y > deadZone || gamepad1.right_stick_y < (deadZone * -1)){
+        if(gamepad1.right_stick_y > (deadZone + 0.1) || gamepad1.right_stick_y < ((deadZone + 0.1) * -1)){
             //passes power to the motor if the game pad is pushed farther than the dead zone
             robot.arm.setPower(gamepad1.right_stick_y * -0.25);
             //rev color
@@ -74,9 +74,9 @@ public class Drive extends OpMode {
             robot.arm.setPower(0);
         }
 
-        if(gamepad1.right_stick_x > deadZone){
+        if(gamepad1.right_stick_x > (deadZone + 0.1)){
             robot.claw.setPosition(robot.closed);
-        }else if(gamepad1.right_stick_x < (deadZone * -1)){
+        }else if(gamepad1.right_stick_x < ((deadZone + 0.1) * -1)){
             robot.claw.setPosition(robot.open);
         }
 
@@ -99,10 +99,12 @@ public class Drive extends OpMode {
             //sets the  servo to fire
             robot.launcher.setPosition(robot.fire);
             //rev color
-            robot.pattern = RevBlinkinLedDriver.BlinkinPattern.SHOT_RED;
+            robot.pattern = RevBlinkinLedDriver.BlinkinPattern.HEARTBEAT_RED;
         }else if(gamepad1.right_trigger > 0 && velocity <= 100.0){
             //sets the  servo to fire
             robot.launcher.setPosition(robot.fire);
+            //rev color
+            robot.pattern = RevBlinkinLedDriver.BlinkinPattern.HEARTBEAT_RED;
         }else{
             //resets the servo
             robot.launcher.setPosition(robot.rest);
@@ -124,7 +126,6 @@ public class Drive extends OpMode {
         //set up the display telemetry
         telemetry.addData("Left Stick Position: ", gamepad1.left_stick_x + " " + gamepad1.left_stick_y);
         telemetry.addData("Velocity: ", "" + velocity);
-        telemetry.addData("Green: ", "" + robot.color.green());
         telemetry.addData("Gyro: ", "" + robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
         telemetry.addData("LED: ", robot.pattern.toString());
         telemetry.update();//call the display telemetry
