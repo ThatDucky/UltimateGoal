@@ -3,16 +3,14 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import java.lang.Math;
 
-@Autonomous(name = "Auto", group = "Auto")
+@Autonomous(name = "AutoRedPowerShot", group = "Auto")
 
-public class Auto extends LinearOpMode {
+public class AutoRedPowerShot extends LinearOpMode {
     Hardware robot = new Hardware();
 
     @Override
@@ -27,27 +25,35 @@ public class Auto extends LinearOpMode {
         waitForStart();
 
         goToLine(0.20);
-        turnTo(-90, 0.35);
-        goToPosition(2, 0.35);
-        turnTo(home,0.13);
-        goToPosition(0.5, 0.35);
+        turnTo(home, 0.12);
+        goToPosition(-1.5,0.20);
+        turnTo(home,0.12);
+        fire(robot.powerShot);
+        turnTo(3,0.15);
+        fire(robot.powerShot);
+        turnTo(6,0.15);
+        fire(robot.powerShot);
+        robot.fWheelPower(0);
+        turnTo(-90,0.35);
+        goToPosition(5.0,0.35);
+        turnTo(home,0.12);
+        goToPosition(1.5,0.20);
         armToPosition(0);
         robot.claw.setPosition(robot.open);
-        goToPosition(-3,0.35);
+        sleep(250);
         armToPosition(2);
-        robot.claw.setPosition(robot.closed);
-        turnTo(home,0.13);
-        fire(robot.highGoal);
-        goToPosition(1.5,0.5);
         robot.shove.setPosition(robot.shoved);
     }
 
     public void armToPosition(int pos){
         if(pos == 1){
+            //up
             robot.arm.setPower(0.25);
         }else if(pos == 2){
+            //half up
             robot.arm.setPower(0.17);
         }else{
+            //down
             robot.arm.setPower(-0.25);
         }
         sleep(2500);
@@ -70,15 +76,6 @@ public class Auto extends LinearOpMode {
         robot.launcher.setPosition(robot.fire);
         sleep(1000);
         robot.launcher.setPosition(robot.rest);
-        sleep(1000);
-        robot.launcher.setPosition(robot.fire);
-        sleep(1000);
-        robot.launcher.setPosition(robot.rest);
-        sleep(1000);
-        robot.launcher.setPosition(robot.fire);
-        sleep(1000);
-        robot.launcher.setPosition(robot.rest);
-        robot.fWheelPower(0);
     }
 
     public void goToLine(double power){

@@ -8,9 +8,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import java.lang.Math;
 
-@TeleOp(name = "Drive", group = "Drive")
+@TeleOp(name = "DriveDefault", group = "Drive")
 
-public class Drive extends OpMode {
+public class DriveDefault extends OpMode {
     Hardware robot = new Hardware();
 
     @Override
