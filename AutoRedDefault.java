@@ -24,17 +24,17 @@ public class AutoRedDefault extends LinearOpMode {
         telemetry.update(); //setup telemetry and call it
         waitForStart();
 
-        goToLine(0.20);
-        turnTo(-90, 0.35);
+        goToLine(0.25);
+        turnTo(-90, 0.30);
         goToPosition(2, 0.35);
-        turnTo(home,0.13);
+        turnTo(home,0.15);
         goToPosition(0.5, 0.35);
         armToPosition(0);
         robot.claw.setPosition(robot.open);
-        goToPosition(-3,0.35);
+        goToPosition(-2.5,0.35);
         armToPosition(2);
         robot.claw.setPosition(robot.closed);
-        turnTo(home,0.13);
+        turnTo(home,0.15);
         fire(robot.highGoal);
         goToPosition(1.5,0.5);
         robot.shove.setPosition(robot.shoved);
@@ -94,12 +94,12 @@ public class AutoRedDefault extends LinearOpMode {
         robot.setMode(2);
         for(int i = 0; i < 4; i++){
             if(point > robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle){
-                while ((point - 2) > robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle) {
+                while ((point - 1.5) > robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle) {
                     robot.setPower(power * -1, power);
                     sleep(10);
                 }
             }else if(point < robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle){
-                while ((point + 2) < robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle) {
+                while ((point + 1.5) < robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle) {
                     robot.setPower(power, power * -1);
                     sleep(10);
                 }

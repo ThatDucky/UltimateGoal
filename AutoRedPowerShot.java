@@ -25,18 +25,16 @@ public class AutoRedPowerShot extends LinearOpMode {
         waitForStart();
 
         goToLine(0.20);
-        turnTo(home, 0.12);
+        turnTo(home, 0.15);
         goToPosition(-1.5,0.20);
-        turnTo(home,0.12);
+        turnTo(home,0.15);
         fire(robot.powerShot);
-        turnTo(3,0.15);
+        turnTo(4,0.15);
         fire(robot.powerShot);
-        turnTo(6,0.15);
+        turnTo(8,0.15);
         fire(robot.powerShot);
         robot.fWheelPower(0);
-        turnTo(-90,0.35);
-        goToPosition(5.0,0.35);
-        turnTo(home,0.12);
+        turnTo(home,0.15);
         goToPosition(1.5,0.20);
         armToPosition(0);
         robot.claw.setPosition(robot.open);
@@ -93,12 +91,12 @@ public class AutoRedPowerShot extends LinearOpMode {
         robot.setMode(2);
         for(int i = 0; i < 4; i++){
             if(point > robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle){
-                while ((point - 2) > robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle) {
+                while ((point - 1.5) > robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle) {
                     robot.setPower(power * -1, power);
                     sleep(10);
                 }
             }else if(point < robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle){
-                while ((point + 2) < robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle) {
+                while ((point + 1.5) < robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle) {
                     robot.setPower(power, power * -1);
                     sleep(10);
                 }
