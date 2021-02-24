@@ -26,14 +26,15 @@ public class AutoRedPowerShot extends LinearOpMode {
 
         goToLine(0.20);
         turnTo(home, 0.15);
-        goToPosition(-1.5,0.20);
+        goToPosition(-2,0.20);
         turnTo(home,0.15);
         fire(robot.powerShot);
         turnTo(4,0.15);
         fire(robot.powerShot);
-        turnTo(8,0.15);
+        turnTo(10,0.15);
         fire(robot.powerShot);
         robot.fWheelPower(0);
+        /*
         turnTo(home,0.15);
         goToPosition(1.5,0.20);
         armToPosition(0);
@@ -41,6 +42,8 @@ public class AutoRedPowerShot extends LinearOpMode {
         sleep(250);
         armToPosition(2);
         robot.shove.setPosition(robot.shoved);
+
+         */
     }
 
     public void armToPosition(int pos){
