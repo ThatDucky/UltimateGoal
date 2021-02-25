@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -32,18 +33,20 @@ public class AutoRedPowerShot extends LinearOpMode {
         turnTo(4,0.15);
         fire(robot.powerShot - 100);
         turnTo(10,0.15);
-        fire(robot.powerShot - 125);
+        fire(robot.powerShot - 120);
         robot.fWheelPower(0);
-        turnTo(home,0.15);
         turnTo(-25,0.25);
         goToPosition(2,0.20);
         armToPosition(0);
         robot.shove.setPosition(robot.shoved);
         robot.claw.setPosition(robot.open);
-        sleep(1500);
+        goToPosition(-1,0.25);
+        sleep(1000);
     }
 
     public void armToPosition(int pos){
+        robot.pattern = RevBlinkinLedDriver.BlinkinPattern.VIOLET;
+        robot.revBlinkinLedDriver.setPattern(robot.pattern);
         if(pos == 1){
             //up
             robot.arm.setPower(0.25);
@@ -59,6 +62,8 @@ public class AutoRedPowerShot extends LinearOpMode {
     }
 
     public void fire(double power){
+        robot.pattern = RevBlinkinLedDriver.BlinkinPattern.RED;
+        robot.revBlinkinLedDriver.setPattern(robot.pattern);
         //spins up the fly wheel and fires the servo then resets everything
         robot.fWheelPower(power);
         double velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity
@@ -79,6 +84,8 @@ public class AutoRedPowerShot extends LinearOpMode {
     }
 
     public void goToLine(double power){
+        robot.pattern = RevBlinkinLedDriver.BlinkinPattern.GREEN;
+        robot.revBlinkinLedDriver.setPattern(robot.pattern);
         //moves forward until the color sensor fine the white line
         robot.setMode(2);
         robot.setPower(power, power);
@@ -89,6 +96,8 @@ public class AutoRedPowerShot extends LinearOpMode {
     }
 
     public void turnTo(float point, double power){
+        robot.pattern = RevBlinkinLedDriver.BlinkinPattern.BLUE;
+        robot.revBlinkinLedDriver.setPattern(robot.pattern);
         //rotates the robot until the gyro fines the defined point then checks a few times
         robot.setMode(2);
         for(int i = 0; i < 4; i++){
@@ -109,6 +118,8 @@ public class AutoRedPowerShot extends LinearOpMode {
     }
 
     public void goToPosition(double decimeters, double power){
+        robot.pattern = RevBlinkinLedDriver.BlinkinPattern.YELLOW;
+        robot.revBlinkinLedDriver.setPattern(robot.pattern);
         //go through the steps to get to target distance
         robot.setTargetPosition(decimeters);
         telemetry.addData("Running To Position", robot.getTargetPosition());
