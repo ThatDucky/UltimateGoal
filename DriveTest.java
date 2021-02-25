@@ -8,9 +8,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import java.lang.Math;
 
-@TeleOp(name = "DriveInverted", group = "Drive")
+@TeleOp(name = "DriveTest", group = "Drive")
 
-public class DriveInverted extends OpMode {
+public class DriveTest extends OpMode {
     Hardware robot = new Hardware();
 
     @Override
@@ -38,8 +38,8 @@ public class DriveInverted extends OpMode {
         robot.pattern = RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE;
 
         //gets x and y values of the game pad and offsets the y value by a percent of the x
-        double left = (gamepad1.left_stick_y) - (gamepad1.left_stick_x * xOffSet);
-        double right = (gamepad1.left_stick_y) + (gamepad1.left_stick_x * xOffSet);
+        double left = (gamepad1.left_stick_y * -1) - (gamepad1.left_stick_x * xOffSet);
+        double right = (gamepad1.left_stick_y * -1) + (gamepad1.left_stick_x * xOffSet);
 
         if(left > deadZone || left < (deadZone * -1) || right > deadZone || right < (deadZone * -1)){
             //passes power to the motor if the game pad is pushed farther than the dead zone in any direction

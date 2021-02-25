@@ -26,31 +26,21 @@ public class AutoRedPowerShot extends LinearOpMode {
 
         goToLine(0.20);
         turnTo(home, 0.15);
-        goToPosition(-2,0.20);
+        goToPosition(-1.5,0.15);
         turnTo(home,0.15);
-        fire(robot.powerShot);
-        sleep(1000);
-        fire(robot.powerShot - 100);
-        sleep(1000);
-        fire(robot.powerShot - 200);
-        /*
+        fire(robot.powerShot - 90);
         turnTo(4,0.15);
-        fire(robot.powerShot);
+        fire(robot.powerShot - 100);
         turnTo(10,0.15);
-        fire(robot.powerShot);
-
-         */
+        fire(robot.powerShot - 125);
         robot.fWheelPower(0);
-        /*
         turnTo(home,0.15);
-        goToPosition(1.5,0.20);
+        turnTo(-25,0.25);
+        goToPosition(2,0.20);
         armToPosition(0);
-        robot.claw.setPosition(robot.open);
-        sleep(250);
-        armToPosition(2);
         robot.shove.setPosition(robot.shoved);
-
-         */
+        robot.claw.setPosition(robot.open);
+        sleep(1500);
     }
 
     public void armToPosition(int pos){
@@ -72,18 +62,20 @@ public class AutoRedPowerShot extends LinearOpMode {
         //spins up the fly wheel and fires the servo then resets everything
         robot.fWheelPower(power);
         double velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity
-        while(velocity < power){
-            velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity update
-            sleep(100);
+        for(int i = 0; i < 2; i++){
+            while(velocity < (power - 10)){
+                velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity update
+                sleep(100);
+            }
+            while(velocity > (power + 10)){
+                velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity update
+                sleep(100);
+            }
         }
-        while(velocity > (power + 10)){
-            velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity update
-            sleep(100);
-        }
-        sleep(250);
         robot.launcher.setPosition(robot.fire);
         sleep(1000);
         robot.launcher.setPosition(robot.rest);
+        sleep(250);
     }
 
     public void goToLine(double power){
@@ -101,12 +93,12 @@ public class AutoRedPowerShot extends LinearOpMode {
         robot.setMode(2);
         for(int i = 0; i < 4; i++){
             if(point > robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle){
-                while ((point - 1.5) > robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle) {
+                while ((point - 1) > robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle) {
                     robot.setPower(power * -1, power);
                     sleep(10);
                 }
             }else if(point < robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle){
-                while ((point + 1.5) < robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle) {
+                while ((point + 1) < robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle) {
                     robot.setPower(power, power * -1);
                     sleep(10);
                 }

@@ -26,7 +26,7 @@ public class AutoRedDefault extends LinearOpMode {
 
         goToLine(0.25);
         turnTo(-90, 0.30);
-        goToPosition(2, 0.35);
+        goToPosition(3, 0.35);
         turnTo(home,0.15);
         goToPosition(0.5, 0.35);
         armToPosition(0);
@@ -36,8 +36,9 @@ public class AutoRedDefault extends LinearOpMode {
         robot.claw.setPosition(robot.closed);
         turnTo(home,0.15);
         fire(robot.highGoal);
+        fire(robot.highGoal);
+        fire(robot.highGoal);
         goToPosition(1.5,0.5);
-        robot.shove.setPosition(robot.shoved);
     }
 
     public void armToPosition(int pos){
@@ -65,14 +66,6 @@ public class AutoRedDefault extends LinearOpMode {
             sleep(100);
         }
         sleep(250);
-        robot.launcher.setPosition(robot.fire);
-        sleep(1000);
-        robot.launcher.setPosition(robot.rest);
-        sleep(1000);
-        robot.launcher.setPosition(robot.fire);
-        sleep(1000);
-        robot.launcher.setPosition(robot.rest);
-        sleep(1000);
         robot.launcher.setPosition(robot.fire);
         sleep(1000);
         robot.launcher.setPosition(robot.rest);
