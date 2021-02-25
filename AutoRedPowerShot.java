@@ -29,10 +29,17 @@ public class AutoRedPowerShot extends LinearOpMode {
         goToPosition(-2,0.20);
         turnTo(home,0.15);
         fire(robot.powerShot);
+        sleep(1000);
+        fire(robot.powerShot - 100);
+        sleep(1000);
+        fire(robot.powerShot - 200);
+        /*
         turnTo(4,0.15);
         fire(robot.powerShot);
         turnTo(10,0.15);
         fire(robot.powerShot);
+
+         */
         robot.fWheelPower(0);
         /*
         turnTo(home,0.15);
