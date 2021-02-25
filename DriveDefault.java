@@ -87,7 +87,7 @@ public class DriveDefault extends OpMode {
             robot.pattern = RevBlinkinLedDriver.BlinkinPattern.RED;
         }else if(gamepad1.left_bumper){
             //sets the fly wheel speed to the power shot goal if bummer is held
-            robot.fWheelPower(robot.powerShot);
+            robot.fWheelPower(robot.powerShot - 100);
             //rev color
             robot.pattern = RevBlinkinLedDriver.BlinkinPattern.BREATH_RED;
         }else{
@@ -95,16 +95,23 @@ public class DriveDefault extends OpMode {
             robot.fWheelPower(0);
         }
 
-        if(gamepad1.right_trigger > 0 && velocity >= (robot.powerShot - 15) && velocity <= (robot.highGoal + 15)){
-            //sets the  servo to fire
-            robot.launcher.setPosition(robot.fire);
-            //rev color
-            robot.pattern = RevBlinkinLedDriver.BlinkinPattern.HEARTBEAT_RED;
-        }else if(gamepad1.right_trigger > 0 && velocity <= 100.0){
-            //sets the  servo to fire
-            robot.launcher.setPosition(robot.fire);
-            //rev color
-            robot.pattern = RevBlinkinLedDriver.BlinkinPattern.HEARTBEAT_RED;
+        if(gamepad1.right_trigger > 0){
+            if(gamepad1.left_trigger > 0 && velocity >= (robot.powerShot - 15) && velocity <= (robot.highGoal + 15)){
+                //sets the  servo to fire
+                robot.launcher.setPosition(robot.fire);
+                //rev color
+                robot.pattern = RevBlinkinLedDriver.BlinkinPattern.HEARTBEAT_RED;
+            }else if(gamepad1.left_bumper && velocity >= (robot.powerShot - 115) && velocity <= (robot.powerShot - 65)){
+                //sets the  servo to fire
+                robot.launcher.setPosition(robot.fire);
+                //rev color
+                robot.pattern = RevBlinkinLedDriver.BlinkinPattern.HEARTBEAT_RED;
+            }else if(velocity <= 100.0){
+                //sets the  servo to fire
+                robot.launcher.setPosition(robot.fire);
+                //rev color
+                robot.pattern = RevBlinkinLedDriver.BlinkinPattern.HEARTBEAT_RED;
+            }
         }else{
             //resets the servo
             robot.launcher.setPosition(robot.rest);
