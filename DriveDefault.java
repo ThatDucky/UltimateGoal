@@ -32,7 +32,7 @@ public class DriveDefault extends OpMode {
     public void loop(){
         double deadZone = 0.13; //controller dead zone
         double velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity
-        double xOffSet = 0.45; //x off set for movement
+        double xOffSet = 0.525; //x off set for movement
 
         //lights default color
         robot.pattern = RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE;
@@ -74,9 +74,9 @@ public class DriveDefault extends OpMode {
             robot.arm.setPower(0);
         }
 
-        if(gamepad1.right_stick_x > (deadZone + 0.1)){
+        if(gamepad1.right_stick_x > (deadZone + 0.35)){
             robot.claw.setPosition(robot.closed);
-        }else if(gamepad1.right_stick_x < ((deadZone + 0.1) * -1)){
+        }else if(gamepad1.right_stick_x < ((deadZone + 0.35) * -1)){
             robot.claw.setPosition(robot.open);
         }
 
@@ -96,7 +96,7 @@ public class DriveDefault extends OpMode {
         }
 
         if(gamepad1.right_trigger > 0){
-            if(gamepad1.left_trigger > 0 && velocity >= (robot.powerShot - 15) && velocity <= (robot.highGoal + 15)){
+            if(gamepad1.left_trigger > 0 && velocity >= (robot.highGoal - 15) && velocity <= (robot.highGoal + 15)){
                 //sets the  servo to fire
                 robot.launcher.setPosition(robot.fire);
                 //rev color
