@@ -8,9 +8,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
-@Autonomous(name = "AutoRedDefault", group = "Auto")
+@Autonomous(name = "AutoRedDefaultRight", group = "Auto")
 
-public class AutoRedDefault extends LinearOpMode {
+public class AutoRedDefaultRight extends LinearOpMode {
     Hardware robot = new Hardware();
 
     @Override
@@ -25,20 +25,17 @@ public class AutoRedDefault extends LinearOpMode {
         waitForStart();
 
         goToLine(0.25);
-        turnTo(-90, 0.30);
-        goToPosition(3, 0.35);
-        turnTo(home,0.15);
-        goToPosition(0.5, 0.35);
+        goToPosition(-1.5,0.15);
+        turnTo(10,0.15);
+        fire(robot.highGoal);
+        fire(robot.highGoal);
+        fire(robot.highGoal);
+        goToPosition(2.5,0.25);
         armToPosition(0);
         robot.claw.setPosition(robot.open);
-        goToPosition(-2.5,0.35);
+        goToPosition(-1.5,0.35);
         armToPosition(2);
         robot.claw.setPosition(robot.closed);
-        turnTo(home,0.15);
-        fire(robot.highGoal);
-        fire(robot.highGoal);
-        fire(robot.highGoal);
-        goToPosition(1.5,0.5);
     }
 
     public void armToPosition(int pos){

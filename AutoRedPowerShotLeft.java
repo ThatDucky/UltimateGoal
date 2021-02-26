@@ -9,9 +9,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
-@Autonomous(name = "AutoRedPowerShot", group = "Auto")
+@Autonomous(name = "AutoRedPowerShotLeft", group = "Auto")
 
-public class AutoRedPowerShot extends LinearOpMode {
+public class AutoRedPowerShotLeft extends LinearOpMode {
     Hardware robot = new Hardware();
 
     @Override
