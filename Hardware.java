@@ -4,9 +4,13 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
+
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
 import java.lang.Math;
 
 public class Hardware {
@@ -21,6 +25,7 @@ public class Hardware {
 
     //Sensors
     public ColorSensor color = null;
+    public DistanceSensor dis = null;
     public BNO055IMU imu = null;
 
     public RevBlinkinLedDriver revBlinkinLedDriver;
@@ -60,18 +65,24 @@ public class Hardware {
 
     //initialize standard hardware interface
     public void init(HardwareMap hwMap){
-        //sensor setup
+        //imu sensor init
         imu = hwMap.get(BNO055IMU.class, "imu");
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.mode = BNO055IMU.SensorMode.IMU;
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         imu.initialize(parameters);
 
+        //Rev Blink init
         revBlinkinLedDriver = hwMap.get(RevBlinkinLedDriver.class, "led");
         pattern = RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE;
         revBlinkinLedDriver.setPattern(pattern);
 
+        //color sensor init
         color = hwMap.get(ColorSensor.class, "color");
+
+        //distance init
+        //dis = hwMap.get(DistanceSensor.class,"dis"); //Ring Thickness is 2cm
+        //dis.getDistance(DistanceUnit.CM);
 
         // define and initialize drive motors
         one = hwMap.get(DcMotorEx.class, "one");

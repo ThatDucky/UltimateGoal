@@ -29,14 +29,14 @@ public class AutoRedPowerShotLeft extends LinearOpMode {
         turnTo(home, 0.15);
         goToPosition(-1.5,0.15);
         turnTo(home,0.15);
-        fire(robot.powerShot - 90);
+        fire(robot.powerShot - 105);
         turnTo(4,0.15);
-        fire(robot.powerShot - 100);
+        fire(robot.powerShot - 115);
         turnTo(10,0.15);
-        fire(robot.powerShot - 120);
+        fire(robot.powerShot - 125);
         robot.fWheelPower(0);
         turnTo(-25,0.25);
-        goToPosition(2,0.20);
+        goToPosition(3.0,0.20);
         armToPosition(0);
         robot.shove.setPosition(robot.shoved);
         robot.claw.setPosition(robot.open);
@@ -49,16 +49,16 @@ public class AutoRedPowerShotLeft extends LinearOpMode {
         robot.revBlinkinLedDriver.setPattern(robot.pattern);
         if(pos == 1){
             //up
-            robot.arm.setPower(0.25);
+            robot.arm.setTargetPosition(0);
         }else if(pos == 2){
             //half up
-            robot.arm.setPower(0.17);
+            robot.arm.setTargetPosition((int)((28 / (28 * 3.14)) * 125) * -11);
         }else{
             //down
-            robot.arm.setPower(-0.25);
+            robot.arm.setTargetPosition((int)((28 / (28 * 3.14)) * 125) * -22);
         }
-        sleep(2500);
-        robot.arm.setPower(0);
+        robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.arm.setPower(0.50);
     }
 
     public void fire(double power){
@@ -89,7 +89,7 @@ public class AutoRedPowerShotLeft extends LinearOpMode {
         //moves forward until the color sensor fine the white line
         robot.setMode(2);
         robot.setPower(power, power);
-        while(robot.color.blue() < 15 && robot.color.green() < 15 && robot.color.red() < 15){
+        while(robot.color.blue() < 25 && robot.color.green() < 25 && robot.color.red() < 25){
             sleep(10);
         }
         robot.setPower(0,0);

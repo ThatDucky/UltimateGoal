@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -26,43 +27,52 @@ public class AutoRedDefaultRight extends LinearOpMode {
 
         goToLine(0.25);
         goToPosition(-1.5,0.15);
-        turnTo(10,0.15);
-        fire(robot.highGoal);
-        fire(robot.highGoal);
-        fire(robot.highGoal);
-        goToPosition(2.5,0.25);
+        turnTo(8,0.15);
+        fire(robot.highGoal - 35);
+        sleep(200);
+        fire(robot.highGoal - 35);
+        sleep(200);
+        fire(robot.highGoal - 35);
+        turnTo(30,0.25);
+        goToPosition(3.0,0.25);
         armToPosition(0);
         robot.claw.setPosition(robot.open);
         goToPosition(-1.5,0.35);
-        armToPosition(2);
-        robot.claw.setPosition(robot.closed);
+        robot.shove.setPosition(robot.shoved);
+        sleep(2000);
     }
 
     public void armToPosition(int pos){
+        robot.pattern = RevBlinkinLedDriver.BlinkinPattern.VIOLET;
+        robot.revBlinkinLedDriver.setPattern(robot.pattern);
         if(pos == 1){
-            robot.arm.setPower(0.25);
+            //up
+            robot.arm.setTargetPosition(0);
         }else if(pos == 2){
-            robot.arm.setPower(0.17);
+            //half up
+            robot.arm.setTargetPosition((int)((28 / (28 * 3.14)) * 125) * -11);
         }else{
-            robot.arm.setPower(-0.25);
+            //down
+            robot.arm.setTargetPosition((int)((28 / (28 * 3.14)) * 125) * -22);
         }
-        sleep(2500);
-        robot.arm.setPower(0);
+        robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.arm.setPower(0.50);
     }
 
     public void fire(double power){
         //spins up the fly wheel and fires the servo then resets everything
         robot.fWheelPower(power);
         double velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity
-        while(velocity < power){
-            velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity update
-            sleep(100);
+        for(int i = 0; i < 2; i++){
+            while(velocity < (power - 10)){
+                velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity update
+                sleep(100);
+            }
+            while(velocity > (power + 10)){
+                velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity update
+                sleep(100);
+            }
         }
-        while(velocity > (power + 10)){
-            velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity update
-            sleep(100);
-        }
-        sleep(250);
         robot.launcher.setPosition(robot.fire);
         sleep(1000);
         robot.launcher.setPosition(robot.rest);
@@ -73,7 +83,7 @@ public class AutoRedDefaultRight extends LinearOpMode {
         //moves forward until the color sensor fine the white line
         robot.setMode(2);
         robot.setPower(power, power);
-        while(robot.color.blue() < 15 && robot.color.green() < 15 && robot.color.red() < 15){
+        while(robot.color.blue() < 25 && robot.color.green() < 25 && robot.color.red() < 25){
             sleep(10);
         }
         robot.setPower(0,0);

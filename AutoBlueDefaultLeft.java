@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -10,10 +9,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
-@Disabled
-@Autonomous(name = "AutoRedDefaultLeft", group = "Auto")
+@Autonomous(name = "AutoBlueDefaultLeft", group = "Auto")
 
-public class AutoRedDefaultLeft extends LinearOpMode {
+public class AutoBlueDefaultLeft extends LinearOpMode {
     Hardware robot = new Hardware();
 
     @Override
@@ -28,20 +26,20 @@ public class AutoRedDefaultLeft extends LinearOpMode {
         waitForStart();
 
         goToLine(0.25);
-        turnTo(-90, 0.30);
-        goToPosition(3, 0.35);
-        turnTo(home,0.15);
-        goToPosition(0.5, 0.35);
+        goToPosition(-1.5,0.15);
+        turnTo(-8,0.15);
+        fire(robot.highGoal - 35);
+        sleep(200);
+        fire(robot.highGoal - 35);
+        sleep(200);
+        fire(robot.highGoal - 35);
+        turnTo(-20,0.25);
+        goToPosition(3.0,0.25);
         armToPosition(0);
         robot.claw.setPosition(robot.open);
-        goToPosition(-2.5,0.35);
-        armToPosition(2);
-        robot.claw.setPosition(robot.closed);
-        turnTo(home,0.15);
-        fire(robot.highGoal);
-        fire(robot.highGoal);
-        fire(robot.highGoal);
-        goToPosition(1.5,0.5);
+        goToPosition(-1.5,0.35);
+        robot.shove.setPosition(robot.shoved);
+        sleep(2000);
     }
 
     public void armToPosition(int pos){

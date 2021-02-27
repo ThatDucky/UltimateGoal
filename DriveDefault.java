@@ -6,6 +6,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
 import java.lang.Math;
 
 @TeleOp(name = "DriveDefault", group = "Drive")
@@ -82,12 +84,21 @@ public class DriveDefault extends OpMode {
 
         if(gamepad1.left_trigger > 0){
             //set Fly Wheel To Spin Up if Left Trigger Is Held
-            robot.fWheelPower(robot.highGoal);
+            if(gamepad1.dpad_down){
+                //slows down even more if dpad down is held
+                robot.fWheelPower(robot.highGoal - 500);
+            }else if(gamepad1.dpad_up){
+                //Speeds up even more if dpad up is held
+                robot.fWheelPower(robot.highGoal - 100);
+            }else{
+                //aim for high goal
+                robot.fWheelPower(robot.highGoal - 300);
+            }
             //rev color
             robot.pattern = RevBlinkinLedDriver.BlinkinPattern.RED;
         }else if(gamepad1.left_bumper){
             //sets the fly wheel speed to the power shot goal if bummer is held
-            robot.fWheelPower(robot.powerShot - 100);
+            robot.fWheelPower(robot.powerShot - 150);
             //rev color
             robot.pattern = RevBlinkinLedDriver.BlinkinPattern.BREATH_RED;
         }else{
@@ -96,12 +107,12 @@ public class DriveDefault extends OpMode {
         }
 
         if(gamepad1.right_trigger > 0){
-            if(gamepad1.left_trigger > 0 && velocity >= (robot.highGoal - 15) && velocity <= (robot.highGoal + 15)){
+            if(gamepad1.left_trigger > 0 && ((velocity >= (robot.highGoal - 315) && velocity <= (robot.highGoal - 285) || (gamepad1.dpad_down && velocity >= (robot.highGoal - 515) && velocity <= (robot.highGoal - 485) || (gamepad1.dpad_up && velocity >= (robot.highGoal - 115) && velocity <= (robot.highGoal - 85)))))){
                 //sets the  servo to fire
                 robot.launcher.setPosition(robot.fire);
                 //rev color
                 robot.pattern = RevBlinkinLedDriver.BlinkinPattern.HEARTBEAT_RED;
-            }else if(gamepad1.left_bumper && velocity >= (robot.powerShot - 115) && velocity <= (robot.powerShot - 65)){
+            }else if(gamepad1.left_bumper && velocity >= (robot.powerShot - 165) && velocity <= (robot.powerShot - 125)){
                 //sets the  servo to fire
                 robot.launcher.setPosition(robot.fire);
                 //rev color
@@ -133,8 +144,9 @@ public class DriveDefault extends OpMode {
         //set up the display telemetry
         telemetry.addData("Left Stick Position: ", gamepad1.left_stick_x + " " + gamepad1.left_stick_y);
         telemetry.addData("Velocity: ", "" + velocity);
-        telemetry.addData("Gyro: ", "" + robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
-        telemetry.addData("LED: ", robot.pattern.toString());
+        //telemetry.addData("Gyro: ", "" + robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
+        //telemetry.addData("LED: ", robot.pattern.toString());
+        //telemetry.addData("Distance: ",""+ robot.dis.getDistance(DistanceUnit.CM));
         telemetry.update();//call the display telemetry
     }
 }
