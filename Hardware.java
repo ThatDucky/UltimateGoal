@@ -55,8 +55,8 @@ public class Hardware {
     double open = 0.0;
     double closed = 0.70;
 
-    double shoved = 0.10;
-    double lay = 0.95;
+    double shoved = 0.95;
+    double lay = 0.25;
 
     //constructor
     public Hardware(){
@@ -81,8 +81,7 @@ public class Hardware {
         color = hwMap.get(ColorSensor.class, "color");
 
         //distance init
-        //dis = hwMap.get(DistanceSensor.class,"dis"); //Ring Thickness is 2cm
-        //dis.getDistance(DistanceUnit.CM);
+        dis = hwMap.get(DistanceSensor.class,"dis"); //Ring Thickness is 2cm
 
         // define and initialize drive motors
         one = hwMap.get(DcMotorEx.class, "one");

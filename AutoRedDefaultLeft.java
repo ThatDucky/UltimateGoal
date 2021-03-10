@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 @Disabled
 @Autonomous(name = "AutoRedDefaultLeft", group = "Auto")
@@ -124,5 +125,19 @@ public class AutoRedDefaultLeft extends LinearOpMode {
         robot.setPower(0,0);
         telemetry.addData("Running To Position", "Done");
         telemetry.update();
+    }
+
+    public int ringScan(double ground){
+        //take the diffrence from the ground to determide amount of rings.
+        double scan = robot.dis.getDistance(DistanceUnit.CM);
+        double dif = (ground - scan);
+        if(dif <= 1.5){
+            return 0;
+        }else if(dif <= 4.5){
+            return 1;
+        }else if(dif >= 8.0){
+            return 4;
+        }
+        return 0;
     }
 }

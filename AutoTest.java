@@ -9,8 +9,10 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
 import java.lang.Math;
-@Disabled
+//@Disabled
 @Autonomous(name = "AutoTest", group = "Auto")
 
 public class AutoTest extends LinearOpMode {
@@ -22,15 +24,30 @@ public class AutoTest extends LinearOpMode {
         robot.setMode(2);
         telemetry.addData("Gyro: ", "Ready");
         telemetry.update();
+        double ground = robot.dis.getDistance(DistanceUnit.CM);
         double tPower = 0.13;
         float home = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle;
         waitForStart();
 
-        armToPosition(0);
-        armToPosition(0);
-        sleep(3000);
-        armToPosition(1);
-        armToPosition(1);
+        goToPosition(-2,0.10);
+        sleep(1500);
+        telemetry.addData("Rings: ", "" + ringScan(ground));
+        telemetry.update();
+        sleep(10000);
+
+    }
+
+    public int ringScan(double ground){
+        double scan = robot.dis.getDistance(DistanceUnit.CM);
+        double dif = (ground - scan);
+        if(dif <= 1.5){
+            return 0;
+        }else if(dif <= 4.5){
+            return 1;
+        }else if(dif >= 8.0){
+            return 4;
+        }
+        return 0;
     }
 
     public void armToPosition(int pos){
@@ -64,7 +81,6 @@ public class AutoTest extends LinearOpMode {
 
     public void goToPosition(int decimeters, double power){
         //go through the steps to get to target distance
-        decimeters *= -1;
         robot.setTargetPosition(decimeters);
         telemetry.addData("Running To Position", robot.getTargetPosition());
         telemetry.update();
