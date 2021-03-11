@@ -14,6 +14,7 @@ import java.lang.Math;
 
 public class DriveDefault extends OpMode {
     Hardware robot = new Hardware();
+    //calls the hardware class
 
     @Override
     public void init(){
@@ -26,7 +27,7 @@ public class DriveDefault extends OpMode {
 
     @Override
     public void start(){
-        telemetry.addData("Status: ", "Ready");
+        telemetry.addData("Drive: ", "Ready");
         telemetry.update(); //setup telemetry and call it
     }
 

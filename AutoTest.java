@@ -19,18 +19,24 @@ import java.lang.Math;
 
 public class AutoTest extends LinearOpMode {
     Hardware robot = new Hardware();
+    //calls the hardware class
 
     @Override
     public void runOpMode(){
         robot.init(hardwareMap);
-        robot.setMode(2);
-        telemetry.addData("Gyro: ", "Ready");
+        //initialize hardware
+        robot.setMode(0);
+        //reset encoders
+        telemetry.addData("Auto: ", "Ready");
         telemetry.update();
+        //setup display telemetry
         double ground = robot.dis.getDistance(DistanceUnit.CM);
+        //start distance from the ground
         float home = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle;
+        //start home position
         waitForStart();
 
-        goToPosition(-2,0.10);
+        goToPosition(-2,0.10, false);
         sleep(1500);
         int ring = ringScan(ground);
         telemetry.addData("Rings: ", "" + ring);
@@ -38,21 +44,21 @@ public class AutoTest extends LinearOpMode {
         if(ring > 2){
             goToLine(0.15);
             turnTo(15,0.25);
-            goToPosition(5.5,0.25);
+            goToPosition(5.5,0.25, true);
             armToPosition(0);
             sleep(1500);
             robot.shove.setPosition(robot.shoved);
         }else if(ring > 1 && ring <= 2){
             goToLine(0.15);
             turnTo(home,0.25);
-            goToPosition(2,0.25);
+            goToPosition(2,0.25, true);
             armToPosition(0);
             sleep(1500);
             robot.shove.setPosition(robot.shoved);
         }else{
             goToLine(0.15);
             turnTo(80,0.25);
-            goToPosition(2,0.25);
+            goToPosition(2,0.25, true);
             armToPosition(0);
             sleep(1500);
             robot.shove.setPosition(robot.shoved);
@@ -61,8 +67,10 @@ public class AutoTest extends LinearOpMode {
     }
 
     public void armToPosition(int pos){
+        //lights for the action stated
         robot.pattern = RevBlinkinLedDriver.BlinkinPattern.VIOLET;
         robot.revBlinkinLedDriver.setPattern(robot.pattern);
+        //adds the display telemetry for the action stated
         telemetry.addData("Moving Arm: ", "In Progress");
         telemetry.update();
         //moves the arm to one of three options. up, down, half
@@ -78,12 +86,14 @@ public class AutoTest extends LinearOpMode {
         }
         robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.arm.setPower(0.80);
-        
+
     }
 
     public void fire(double power){
+        //lights for the action stated
         robot.pattern = RevBlinkinLedDriver.BlinkinPattern.RED;
         robot.revBlinkinLedDriver.setPattern(robot.pattern);
+        //adds the display telemetry for the action stated
         telemetry.addData("Shooting: ", "In Progress");
         telemetry.update();
         //spins up the fly wheel and fires the servo then resets everything
@@ -108,8 +118,10 @@ public class AutoTest extends LinearOpMode {
     }
 
     public void goToLine(double power){
+        //lights for the action stated
         robot.pattern = RevBlinkinLedDriver.BlinkinPattern.GREEN;
         robot.revBlinkinLedDriver.setPattern(robot.pattern);
+        //adds the display telemetry for the action stated
         telemetry.addData("Finding Line: ", "In Progress");
         telemetry.update();
         //moves forward until the color sensor fine the white line
@@ -124,8 +136,10 @@ public class AutoTest extends LinearOpMode {
     }
 
     public void turnTo(float point, double power){
+        //lights for the action stated
         robot.pattern = RevBlinkinLedDriver.BlinkinPattern.BLUE;
         robot.revBlinkinLedDriver.setPattern(robot.pattern);
+        //adds the display telemetry for the action stated
         telemetry.addData("Turning: ", "In Progress");
         telemetry.update();
         //rotates the robot until the gyro fines the defined point then checks a few times
@@ -149,26 +163,32 @@ public class AutoTest extends LinearOpMode {
         telemetry.update();
     }
 
-    public void goToPosition(double decimeters, double power){
+    public void goToPosition(double decimeters, double power, boolean absolutePosition){
+        //lights for the action stated
         robot.pattern = RevBlinkinLedDriver.BlinkinPattern.YELLOW;
         robot.revBlinkinLedDriver.setPattern(robot.pattern);
+        //adds the display telemetry for the action stated
         telemetry.addData("Running To Position: ", "In Progress");
+        telemetry.addData("Absolute Position: ", "" + absolutePosition);
         telemetry.update();
         //go through the steps to get to target distance
         robot.setTargetPosition(decimeters);
         robot.setMode(1);
         robot.setPower(power, power);
-        while(robot.one.isBusy()){
+        while(robot.isBusy() && (!robot.atTarget() || absolutePosition)){
             sleep(10);
         }
         robot.setPower(0,0);
         telemetry.addData("Running To Position: ", "Done");
+        telemetry.addData("Absolute Position: ", "" + absolutePosition);
         telemetry.update();
     }
 
     public int ringScan(double ground){
+        //lights for the action stated
         robot.pattern = RevBlinkinLedDriver.BlinkinPattern.BLUE_GREEN;
         robot.revBlinkinLedDriver.setPattern(robot.pattern);
+        //adds the display telemetry for the action stated
         telemetry.addData("Scanning For Rings: ", "In Progress");
         telemetry.update();
         //finds the difference between current distance and ground then divides it by the ring distance.

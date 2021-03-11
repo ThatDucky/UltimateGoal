@@ -16,6 +16,7 @@ import java.lang.Math;
 
 public class DriveTest extends OpMode {
     Hardware robot = new Hardware();
+    //calls the hardware class
 
     @Override
     public void init(){

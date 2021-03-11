@@ -148,6 +148,14 @@ public class Hardware {
         return one.getTargetPosition() + " " + two.getTargetPosition() + " " + three.getTargetPosition() + " " + four.getTargetPosition();
     }
 
+    public boolean atTarget(){
+        //returns true if any motor is at target postition
+        if(one.getCurrentPosition() == one.getTargetPosition() || two.getCurrentPosition() == two.getTargetPosition() || three.getCurrentPosition() == three.getTargetPosition() || four.getCurrentPosition() == four.getTargetPosition()){
+            return true;
+        }
+        return false;
+    }
+
     public boolean isBusy(){
         //checks to see if any of the motor are in use and returns a bool
         return one.isBusy() || two.isBusy() || three.isBusy() || four.isBusy();
