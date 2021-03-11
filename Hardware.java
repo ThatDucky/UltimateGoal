@@ -8,9 +8,6 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
-
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-
 import java.lang.Math;
 
 public class Hardware {

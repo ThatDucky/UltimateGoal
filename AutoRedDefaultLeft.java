@@ -48,6 +48,7 @@ public class AutoRedDefaultLeft extends LinearOpMode {
     public void armToPosition(int pos){
         robot.pattern = RevBlinkinLedDriver.BlinkinPattern.VIOLET;
         robot.revBlinkinLedDriver.setPattern(robot.pattern);
+        //moves the arm to one of three options. up, down, half
         if(pos == 1){
             //up
             robot.arm.setTargetPosition(0);
@@ -128,16 +129,11 @@ public class AutoRedDefaultLeft extends LinearOpMode {
     }
 
     public int ringScan(double ground){
-        //take the diffrence from the ground to determide amount of rings.
+        robot.pattern = RevBlinkinLedDriver.BlinkinPattern.BLUE_GREEN;
+        robot.revBlinkinLedDriver.setPattern(robot.pattern);
+        //finds the difference between current distance and ground then divides it by the ring distance.
         double scan = robot.dis.getDistance(DistanceUnit.CM);
         double dif = (ground - scan);
-        if(dif <= 1.5){
-            return 0;
-        }else if(dif <= 4.5){
-            return 1;
-        }else if(dif >= 8.0){
-            return 4;
-        }
-        return 0;
+        return (int)Math.round(dif / 2.2); //Thickness of the ring ~2.2 cm
     }
 }

@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 @Autonomous(name = "AutoRedPowerShotLeft", group = "Auto")
 
@@ -34,19 +35,20 @@ public class AutoRedPowerShotLeft extends LinearOpMode {
         fire(robot.powerShot - 115);
         turnTo(10,0.15);
         fire(robot.powerShot - 125);
-        robot.fWheelPower(0);
+        robot.fWheelPower(0); //Fires at Power Shot
         turnTo(-25,0.25);
         goToPosition(3.0,0.20);
         armToPosition(0);
+        sleep(1500);
         robot.shove.setPosition(robot.shoved);
         robot.claw.setPosition(robot.open);
         goToPosition(-1,0.25);
-        sleep(1000);
     }
 
     public void armToPosition(int pos){
         robot.pattern = RevBlinkinLedDriver.BlinkinPattern.VIOLET;
         robot.revBlinkinLedDriver.setPattern(robot.pattern);
+        //moves the arm to one of three options. up, down, half
         if(pos == 1){
             //up
             robot.arm.setTargetPosition(0);
@@ -58,7 +60,7 @@ public class AutoRedPowerShotLeft extends LinearOpMode {
             robot.arm.setTargetPosition((int)((28 / (28 * 3.14)) * 125) * -22);
         }
         robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.arm.setPower(0.50);
+        robot.arm.setPower(0.80);
     }
 
     public void fire(double power){
@@ -132,5 +134,14 @@ public class AutoRedPowerShotLeft extends LinearOpMode {
         robot.setPower(0,0);
         telemetry.addData("Running To Position", "Done");
         telemetry.update();
+    }
+
+    public int ringScan(double ground){
+        robot.pattern = RevBlinkinLedDriver.BlinkinPattern.BLUE_GREEN;
+        robot.revBlinkinLedDriver.setPattern(robot.pattern);
+        //finds the difference between current distance and ground then divides it by the ring distance.
+        double scan = robot.dis.getDistance(DistanceUnit.CM);
+        double dif = (ground - scan);
+        return (int)Math.round(dif / 2.2); //Thickness of the ring ~2.2 cm
     }
 }

@@ -146,7 +146,7 @@ public class DriveDefault extends OpMode {
         telemetry.addData("Velocity: ", "" + velocity);
         //telemetry.addData("Gyro: ", "" + robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
         //telemetry.addData("LED: ", robot.pattern.toString());
-        telemetry.addData("Distance: ",""+ robot.dis.getDistance(DistanceUnit.CM));
+        //telemetry.addData("Distance: ",""+ robot.dis.getDistance(DistanceUnit.CM));
         telemetry.update();//call the display telemetry
     }
 }

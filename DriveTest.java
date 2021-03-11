@@ -11,8 +11,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 import java.lang.Math;
 
-@TeleOp(name = "DriveTest", group = "Drive")
 @Disabled
+@TeleOp(name = "DriveTest", group = "Drive")
+
 public class DriveTest extends OpMode {
     Hardware robot = new Hardware();
 
