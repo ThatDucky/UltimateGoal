@@ -64,11 +64,13 @@ public class AutoRedDefaultRight extends LinearOpMode {
             robot.arm.setTargetPosition((int)((28 / (28 * 3.14)) * 125) * -11);
         }else{
             //down
-            robot.arm.setTargetPosition((int)((28 / (28 * 3.14)) * 125) * -22);
+            robot.arm.setTargetPosition((int)((28 / (28 * 3.14)) * 125) * -33);
         }
         robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.arm.setPower(0.80);
-
+        while(robot.arm.isBusy()){
+            sleep(100);
+        }
     }
 
     public void fire(double power){

@@ -27,6 +27,8 @@ public class AutoTest extends LinearOpMode {
         //initialize hardware
         robot.setMode(0);
         //reset encoders
+        robot.claw.setPosition(robot.closed);
+        //makes the claw hold the wobble goal
         telemetry.addData("Auto: ", "Ready");
         telemetry.update();
         //setup display telemetry
@@ -36,34 +38,47 @@ public class AutoTest extends LinearOpMode {
         //start home position
         waitForStart();
 
-        goToPosition(-2,0.10, false);
-        sleep(1500);
+        goToLine(0.25);
+        turnTo(home, 0.20);
+        goToPosition(-1.5,0.20,false);
+        turnTo(home,0.20);
+        fire();
+        turnTo(4,0.20);
+        fire();
+        turnTo(10,0.20);
+        fire();
+        //fires at Power Shots
+        robot.fWheelPower(0);
+        //powers off the flywheel
+        turnTo(30,0.30);
+        goToPosition(-5.5,0.25,false);
         int ring = ringScan(ground);
-        telemetry.addData("Rings: ", "" + ring);
-        telemetry.update();
+        turnTo(home, 0.20);
         if(ring > 2){
-            goToLine(0.15);
-            turnTo(15,0.25);
-            goToPosition(5.5,0.25, true);
+            goToLine(0.25);
+            turnTo(-20,0.30);
+            goToPosition(8,0.30, true);
             armToPosition(0);
-            sleep(1500);
-            robot.shove.setPosition(robot.shoved);
-        }else if(ring > 1 && ring <= 2){
-            goToLine(0.15);
-            turnTo(home,0.25);
-            goToPosition(2,0.25, true);
+            robot.claw.setPosition(robot.open);
+            sleep(500);
+            goToPosition(-6,0.30,false);
+        }else if(ring >= 1 && ring <= 2){
+            goToLine(0.25);
+            turnTo(home,0.30);
+            goToPosition(1.5,0.30, true);
             armToPosition(0);
-            sleep(1500);
-            robot.shove.setPosition(robot.shoved);
+            robot.claw.setPosition(robot.open);
+            sleep(500);
+            goToPosition(-2,0.30,false);
         }else{
-            goToLine(0.15);
-            turnTo(80,0.25);
-            goToPosition(2,0.25, true);
+            goToLine(0.25);
+            turnTo(-70,0.30);
+            goToPosition(1.5,0.30,true);
             armToPosition(0);
-            sleep(1500);
-            robot.shove.setPosition(robot.shoved);
+            robot.claw.setPosition(robot.open);
+            sleep(500);
+            goToPosition(-2,0.30,false);
         }
-        sleep(1000);
     }
 
     public void armToPosition(int pos){
@@ -82,14 +97,18 @@ public class AutoTest extends LinearOpMode {
             robot.arm.setTargetPosition((int)((28 / (28 * 3.14)) * 125) * -11);
         }else{
             //down
-            robot.arm.setTargetPosition((int)((28 / (28 * 3.14)) * 125) * -22);
+            robot.arm.setTargetPosition((int)((28 / (28 * 3.14)) * 125) * -33);
         }
         robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.arm.setPower(0.80);
-
+        robot.arm.setPower(1.00);
+        while(robot.arm.isBusy()){
+            sleep(100);
+        }
+        telemetry.addData("Moving Arm: ", "Done");
+        telemetry.update();
     }
 
-    public void fire(double power){
+    public void fire(){
         //lights for the action stated
         robot.pattern = RevBlinkinLedDriver.BlinkinPattern.RED;
         robot.revBlinkinLedDriver.setPattern(robot.pattern);
@@ -97,20 +116,24 @@ public class AutoTest extends LinearOpMode {
         telemetry.addData("Shooting: ", "In Progress");
         telemetry.update();
         //spins up the fly wheel and fires the servo then resets everything
+        double angle = Math.abs(robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
+        double offset = ((angle * 2.5) / (0.8 * (0.045 * angle))) - 105.0;
+        double power = robot.powerShot - offset;
+        //calculates the offset for the power shot goal
         robot.fWheelPower(power);
         double velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity
         for(int i = 0; i < 2; i++){
-            while(velocity < (power - 10)){
+            while(velocity < (power - 7.5)){
                 velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity update
                 sleep(100);
             }
-            while(velocity > (power + 10)){
+            while(velocity > (power + 7.5)){
                 velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity update
                 sleep(100);
             }
         }
         robot.launcher.setPosition(robot.fire);
-        sleep(1000);
+        sleep(750);
         robot.launcher.setPosition(robot.rest);
         sleep(250);
         telemetry.addData("Shooting: ", "Done");
@@ -131,6 +154,7 @@ public class AutoTest extends LinearOpMode {
             sleep(10);
         }
         robot.setPower(0,0);
+        //reset motors to 0
         telemetry.addData("Finding Line: ", "Done");
         telemetry.update();
     }
@@ -144,7 +168,7 @@ public class AutoTest extends LinearOpMode {
         telemetry.update();
         //rotates the robot until the gyro fines the defined point then checks a few times
         robot.setMode(2);
-        for(int i = 0; i < 4; i++){
+        for(int i = 0; i < 2; i++){
             if(point > robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle){
                 while ((point - 1) > robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle) {
                     robot.setPower(power * -1, power);
@@ -156,9 +180,14 @@ public class AutoTest extends LinearOpMode {
                     sleep(10);
                 }
             }
+            power *= 0.75;
+            if(power < 0.08){
+                power = 0.08;
+            }
         }
         robot.setPower(0,0);
         robot.setMode(0);
+        //reset motors to 0
         telemetry.addData("Turning: ", "Done");
         telemetry.update();
     }
@@ -179,6 +208,7 @@ public class AutoTest extends LinearOpMode {
             sleep(10);
         }
         robot.setPower(0,0);
+        //reset motors the 0
         telemetry.addData("Running To Position: ", "Done");
         telemetry.addData("Absolute Position: ", "" + absolutePosition);
         telemetry.update();
@@ -196,6 +226,7 @@ public class AutoTest extends LinearOpMode {
         double dif = (ground - scan);
         telemetry.addData("Scanning For Rings: ", "Done");
         telemetry.update();
-        return (int)Math.round(dif / 2.2); //Thickness of the ring ~2.2 cm
+        return (int)Math.round(dif / 2);
+        //Thickness of the ring ~2 cm
     }
 }

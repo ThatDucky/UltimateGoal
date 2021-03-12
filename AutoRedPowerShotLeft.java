@@ -40,14 +40,38 @@ public class AutoRedPowerShotLeft extends LinearOpMode {
         fire(robot.powerShot - 115);
         turnTo(10,0.15);
         fire(robot.powerShot - 125);
-        robot.fWheelPower(0); //Fires at Power Shot
-        turnTo(-25,0.25);
-        goToPosition(3.0,0.20, true);
-        armToPosition(0);
-        sleep(1500);
-        robot.shove.setPosition(robot.shoved);
-        robot.claw.setPosition(robot.open);
-        goToPosition(-1,0.25,true);
+        //fires at Power Shots
+        robot.fWheelPower(0);
+        turnTo(30,0.25);
+        goToPosition(-6,0.25,false);
+        int ring = ringScan(ground);
+        sleep(500);
+        turnTo(home, 0.15);
+        if(ring > 2){
+            goToLine(0.15);
+            turnTo(-20,0.25);
+            goToPosition(8.5,0.25, true);
+            armToPosition(0);
+            robot.claw.setPosition(robot.open);
+            sleep(500);
+            goToPosition(-6,0.30,false);
+        }else if(ring >= 1 && ring <= 2){
+            goToLine(0.15);
+            turnTo(home,0.25);
+            goToPosition(2,0.25, true);
+            armToPosition(0);
+            robot.claw.setPosition(robot.open);
+            sleep(500);
+            goToPosition(-2,0.30,false);
+        }else{
+            goToLine(0.15);
+            turnTo(-70,0.25);
+            goToPosition(1.5,0.30,true);
+            armToPosition(0);
+            robot.claw.setPosition(robot.open);
+            sleep(500);
+            goToPosition(-2,0.30,false);
+        }
     }
 
     public void armToPosition(int pos){
@@ -66,11 +90,13 @@ public class AutoRedPowerShotLeft extends LinearOpMode {
             robot.arm.setTargetPosition((int)((28 / (28 * 3.14)) * 125) * -11);
         }else{
             //down
-            robot.arm.setTargetPosition((int)((28 / (28 * 3.14)) * 125) * -22);
+            robot.arm.setTargetPosition((int)((28 / (28 * 3.14)) * 125) * -33);
         }
         robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.arm.setPower(0.80);
-
+        while(robot.arm.isBusy()){
+            sleep(100);
+        }
     }
 
     public void fire(double power){
@@ -130,12 +156,12 @@ public class AutoRedPowerShotLeft extends LinearOpMode {
         robot.setMode(2);
         for(int i = 0; i < 4; i++){
             if(point > robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle){
-                while ((point - 1) > robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle) {
+                while ((point - 1.5) > robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle) {
                     robot.setPower(power * -1, power);
                     sleep(10);
                 }
             }else if(point < robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle){
-                while ((point + 1) < robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle) {
+                while ((point + 1.5) < robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle) {
                     robot.setPower(power, power * -1);
                     sleep(10);
                 }
