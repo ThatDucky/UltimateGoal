@@ -8,6 +8,9 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
+
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+
 import java.lang.Math;
 
 public class Hardware {
@@ -194,4 +197,13 @@ public class Hardware {
                 break;
         }
     }
+
+    public double calculateVelocity(double dx, double dy){
+        double g = 9.8009;
+        double A = ((2.0*(Math.pow(dy,3.0))) + (9.0*g*(Math.pow(dx,2.0)))) / 108.0;
+        double B = (-3.0 - (Math.pow(dy,2.0))) / 9.0;
+        double velocity = 1.0 / Math.sin(Math.cbrt(A + Math.cbrt(Math.pow(A,2.0) + Math.pow(B,3.0))) + Math.cbrt(A - Math.sqrt(Math.pow(A,2.0) + Math.pow(B,3.0))) + (dy/3));
+        return velocity;
+    }
+
 }

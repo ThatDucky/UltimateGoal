@@ -29,7 +29,7 @@ public class DriveTest extends OpMode {
 
     @Override
     public void start(){
-        telemetry.addData("Status: ", "Ready");
+        telemetry.addData("Drive: ", "Ready");
         telemetry.update(); //setup telemetry and call it
     }
 

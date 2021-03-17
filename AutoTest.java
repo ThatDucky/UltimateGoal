@@ -42,11 +42,11 @@ public class AutoTest extends LinearOpMode {
         turnTo(home, 0.20);
         goToPosition(-1.5,0.20,false);
         turnTo(home,0.20);
-        fire();
+        fire(0.77);
         turnTo(4,0.20);
-        fire();
+        fire(0.77);
         turnTo(10,0.20);
-        fire();
+        fire(0.77);
         //fires at Power Shots
         robot.fWheelPower(0);
         //powers off the flywheel
@@ -108,7 +108,7 @@ public class AutoTest extends LinearOpMode {
         telemetry.update();
     }
 
-    public void fire(){
+    public void fire(double shotH){
         //lights for the action stated
         robot.pattern = RevBlinkinLedDriver.BlinkinPattern.RED;
         robot.revBlinkinLedDriver.setPattern(robot.pattern);
@@ -117,8 +117,9 @@ public class AutoTest extends LinearOpMode {
         telemetry.update();
         //spins up the fly wheel and fires the servo then resets everything
         double angle = Math.abs(robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
-        double offset = ((angle * 2.5) / (0.8 * (0.045 * angle))) - 105.0;
-        double power = robot.powerShot - offset;
+        double dy = shotH;
+        double dx = 1.6 / Math.cos(angle);
+        double power = robot.calculateVelocity(dx,dy);
         //calculates the offset for the power shot goal
         robot.fWheelPower(power);
         double velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity
