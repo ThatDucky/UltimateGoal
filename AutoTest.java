@@ -37,11 +37,16 @@ public class AutoTest extends LinearOpMode {
         float home = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle;
         //start home position
         waitForStart();
-
+        /*
         goToLine(0.25);
         turnTo(home, 0.20);
         goToPosition(-1.5,0.20,false);
         turnTo(home,0.20);
+         */
+        double angle = Math.abs(robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
+        telemetry.addData("V: ","" + robot.calculateVelocity((1.65 / Math.cos(angle)),0.77));
+        telemetry.update();
+        sleep(5000);
         fire(0.77);
         turnTo(4,0.20);
         fire(0.77);
@@ -49,6 +54,7 @@ public class AutoTest extends LinearOpMode {
         fire(0.77);
         //fires at Power Shots
         robot.fWheelPower(0);
+        /*
         //powers off the flywheel
         turnTo(30,0.30);
         goToPosition(-5.5,0.25,false);
@@ -79,6 +85,7 @@ public class AutoTest extends LinearOpMode {
             sleep(500);
             goToPosition(-2,0.30,false);
         }
+         */
     }
 
     public void armToPosition(int pos){
@@ -118,7 +125,7 @@ public class AutoTest extends LinearOpMode {
         //spins up the fly wheel and fires the servo then resets everything
         double angle = Math.abs(robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
         double dy = shotH;
-        double dx = 1.6 / Math.cos(angle);
+        double dx = 1.65 / Math.cos(angle);
         double power = robot.calculateVelocity(dx,dy);
         //calculates the offset for the power shot goal
         robot.fWheelPower(power);

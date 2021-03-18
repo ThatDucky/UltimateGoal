@@ -17,7 +17,7 @@ public class Hardware {
     //Revs Per Decimeters - variables
     double diameter = 10; //measure the wheel in centimeters
     double ticks = 28; //REV-41-129 has 28 ticks per cycle
-    double ticksPerCentimeters = (ticks / (diameter * 3)) * 12; //12 is for the gear reduction || 3 is pi
+    double ticksPerCentimeters = (ticks / (diameter * Math.PI)) * 12; //12 is for the gear reduction
 
     //flywheel variables
     double highGoal = 1900;
@@ -199,10 +199,11 @@ public class Hardware {
     }
 
     public double calculateVelocity(double dx, double dy){
-        double g = 9.8009;
-        double A = ((2.0*(Math.pow(dy,3.0))) + (9.0*g*(Math.pow(dx,2.0)))) / 108.0;
-        double B = (-3.0 - (Math.pow(dy,2.0))) / 9.0;
-        double velocity = 1.0 / Math.sin(Math.cbrt(A + Math.cbrt(Math.pow(A,2.0) + Math.pow(B,3.0))) + Math.cbrt(A - Math.sqrt(Math.pow(A,2.0) + Math.pow(B,3.0))) + (dy/3));
+        double g = 9.8009; //Gravity
+        double A = ((2.0*(Math.pow(dy,3.0))) + (9.0*g*(Math.pow(dx,2.0)))) / 108.0; //Section A
+        double B = (-3.0 - (Math.pow(dy,2.0))) / 9.0; //Section B
+        double velocity = Math.sin(Math.cbrt(A + Math.cbrt(Math.pow(A,2.0) + Math.pow(B,3.0))) + Math.cbrt(A - Math.sqrt(Math.pow(A,2.0) + Math.pow(B,3.0))) + (dy/3));
+        velocity = ((100 * velocity) / (9 * Math.PI)) / ticks;
         return velocity;
     }
 
