@@ -2,10 +2,8 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -19,6 +17,8 @@ import java.lang.Math;
 
 public class AutoTest extends LinearOpMode {
     Hardware robot = new Hardware();
+    public double distance = 2.45;
+    public double height = 0.90;
     //calls the hardware class
 
     @Override
@@ -44,14 +44,11 @@ public class AutoTest extends LinearOpMode {
         turnTo(home,0.20);
          */
         double angle = Math.abs(robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
-        telemetry.addData("V: ","" + robot.calculateVelocity((1.65 / Math.cos(angle)),0.77));
+        telemetry.addData("V: ","" + robot.calculateVelocity((distance / Math.cos(angle)), height));
         telemetry.update();
-        sleep(5000);
-        fire(0.77);
-        turnTo(4,0.20);
-        fire(0.77);
-        turnTo(10,0.20);
-        fire(0.77);
+        sleep(2500);
+        fire(height);
+
         //fires at Power Shots
         robot.fWheelPower(0);
         /*
@@ -125,21 +122,26 @@ public class AutoTest extends LinearOpMode {
         //spins up the fly wheel and fires the servo then resets everything
         double angle = Math.abs(robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
         double dy = shotH;
-        double dx = 1.65 / Math.cos(angle);
+        double dx = distance / Math.cos(angle);
         double power = robot.calculateVelocity(dx,dy);
         //calculates the offset for the power shot goal
         robot.fWheelPower(power);
         double velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity
         for(int i = 0; i < 2; i++){
-            while(velocity < (power - 7.5)){
+            while(velocity < (power - 2.5)){
+                telemetry.addData("V: ", "" + ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2));
+                telemetry.update();
                 velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity update
-                sleep(100);
+                sleep(500);
             }
-            while(velocity > (power + 7.5)){
+            while(velocity > (power + 2.5)){
+                telemetry.addData("V: ", "" + ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2));
+                telemetry.update();
                 velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity update
-                sleep(100);
+                sleep(500);
             }
         }
+        sleep(1000);
         robot.launcher.setPosition(robot.fire);
         sleep(750);
         robot.launcher.setPosition(robot.rest);

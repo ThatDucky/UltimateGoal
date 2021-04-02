@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -8,6 +9,7 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.UltrasonicSensor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
@@ -24,6 +26,7 @@ public class Hardware {
     double powerShot = 1000;
 
     //Sensors
+    public ModernRoboticsI2cRangeSensor zoom = null;
     public ColorSensor color = null;
     public DistanceSensor dis = null;
     public BNO055IMU imu = null;
@@ -59,12 +62,12 @@ public class Hardware {
     double lay = 0.25;
 
     //constructor
-    public Hardware(){
+    public Hardware() {
 
     }
 
     //initialize standard hardware interface
-    public void init(HardwareMap hwMap){
+    public void init(HardwareMap hwMap) {
         //imu sensor init
         imu = hwMap.get(BNO055IMU.class, "imu");
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -81,7 +84,10 @@ public class Hardware {
         color = hwMap.get(ColorSensor.class, "color");
 
         //distance init
-        dis = hwMap.get(DistanceSensor.class,"dis"); //Ring Thickness is 2cm
+        dis = hwMap.get(DistanceSensor.class, "dis"); //Ring Thickness is 2cm
+
+        //Sonic init
+        zoom = hwMap.get(ModernRoboticsI2cRangeSensor.class, "zoom");
 
         // define and initialize drive motors
         one = hwMap.get(DcMotorEx.class, "one");
@@ -112,7 +118,7 @@ public class Hardware {
         fWheelTwo.setDirection(DcMotorEx.Direction.REVERSE); //left flywheel
 
         //set all drive motors to zero power
-        setPower(0,0);
+        setPower(0, 0);
         fWheelPower(0);
         lift.setPower(0);
         arm.setPower(0);
@@ -123,13 +129,13 @@ public class Hardware {
         shove = hwMap.get(Servo.class, "shove");
     }
 
-    public void fWheelPower(double power){
+    public void fWheelPower(double power) {
         //sets fly wheels power
         fWheelOne.setVelocity(power);
         fWheelTwo.setVelocity(power);
     }
 
-    public void setPower(double lPower,double rPower){
+    public void setPower(double lPower, double rPower) {
         //set the power of all motors at once
         one.setPower(lPower);
         two.setPower(lPower);
@@ -137,36 +143,36 @@ public class Hardware {
         four.setPower(rPower);
     }
 
-    public void setTargetPosition(double decimeters){
+    public void setTargetPosition(double decimeters) {
         //set the target position of all the motors at once
-        int target = (int)(Math.round((decimeters * 10) * ticksPerCentimeters));
+        int target = (int) (Math.round((decimeters * 10) * ticksPerCentimeters));
         one.setTargetPosition(one.getCurrentPosition() + target);
         two.setTargetPosition(two.getCurrentPosition() + target);
         three.setTargetPosition(three.getCurrentPosition() + target);
         four.setTargetPosition(four.getCurrentPosition() + target);
     }
 
-    public String getTargetPosition(){
+    public String getTargetPosition() {
         //returns a string of all the target positions of the motors
         return one.getTargetPosition() + " " + two.getTargetPosition() + " " + three.getTargetPosition() + " " + four.getTargetPosition();
     }
 
-    public boolean atTarget(){
+    public boolean atTarget() {
         //returns true if any motor is at target postition
-        if(one.getCurrentPosition() == one.getTargetPosition() || two.getCurrentPosition() == two.getTargetPosition() || three.getCurrentPosition() == three.getTargetPosition() || four.getCurrentPosition() == four.getTargetPosition()){
+        if (one.getCurrentPosition() == one.getTargetPosition() || two.getCurrentPosition() == two.getTargetPosition() || three.getCurrentPosition() == three.getTargetPosition() || four.getCurrentPosition() == four.getTargetPosition()) {
             return true;
         }
         return false;
     }
 
-    public boolean isBusy(){
+    public boolean isBusy() {
         //checks to see if any of the motor are in use and returns a bool
         return one.isBusy() || two.isBusy() || three.isBusy() || four.isBusy();
     }
 
-    public void setMode(int mode){
+    public void setMode(int mode) {
         //sets the mode of all drive motors based on input
-        switch (mode){
+        switch (mode) {
             case 0:
                 //reset all encoders
                 one.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
@@ -198,13 +204,17 @@ public class Hardware {
         }
     }
 
-    public double calculateVelocity(double dx, double dy){
-        double g = 9.8009; //Gravity
-        double A = ((2.0*(Math.pow(dy,3.0))) + (9.0*g*(Math.pow(dx,2.0)))) / 108.0; //Section A
-        double B = (-3.0 - (Math.pow(dy,2.0))) / 9.0; //Section B
-        double velocity = Math.sin(Math.cbrt(A + Math.cbrt(Math.pow(A,2.0) + Math.pow(B,3.0))) + Math.cbrt(A - Math.sqrt(Math.pow(A,2.0) + Math.pow(B,3.0))) + (dy/3));
-        velocity = ((100 * velocity) / (9 * Math.PI)) / ticks;
+    public static double calculateVelocity(double dx, double dy){
+        double a = -0.7622205798;
+        double b = 1.438371147 * dy;
+        double d = 9.81 * Math.pow(dx,2);
+        double SA = ((-1 * Math.pow(b,3)) / 27 * Math.pow(a,3)) - (d / (2 * a));
+        double SB = -1 * (Math.pow(b,2) / (9 * Math.pow(a,2)));
+        double SC = b / (3 * a);
+
+        double velocity = Math.cbrt(SA + Math.sqrt(Math.pow(SA,2) + Math.pow(SB,3))) + Math.cbrt(SA + Math.sqrt(Math.pow(SA,2) - Math.pow(SB,3))) - SC;
+
+        velocity = ((velocity * 100) / (28 / (9 * Math.PI))) * 1.00;
         return velocity;
     }
-
 }

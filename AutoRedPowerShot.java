@@ -10,9 +10,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-@Autonomous(name = "AutoRedPowerShotLeft", group = "Auto")
+@Autonomous(name = "AutoRedPowerShot", group = "Auto")
 
-public class AutoRedPowerShotLeft extends LinearOpMode {
+public class AutoRedPowerShot extends LinearOpMode {
     Hardware robot = new Hardware();
     //calls the hardware class
 
@@ -22,6 +22,8 @@ public class AutoRedPowerShotLeft extends LinearOpMode {
         //initialize hardware
         robot.setMode(0);
         //reset encoders
+        robot.claw.setPosition(robot.closed);
+        //makes the claw hold the wobble goal
         telemetry.addData("Auto: ", "Ready");
         telemetry.update();
         //setup display telemetry
@@ -32,40 +34,40 @@ public class AutoRedPowerShotLeft extends LinearOpMode {
         waitForStart();
 
         goToLine(0.20);
-        turnTo(home, 0.15);
-        goToPosition(-1.5,0.15,true);
-        turnTo(home,0.15);
-        fire(robot.powerShot - 105);
-        turnTo(4,0.15);
-        fire(robot.powerShot - 115);
-        turnTo(10,0.15);
+        turnTo(home, 0.20);
+        goToPosition(-1.25,0.20,false);
+        turnTo(home,0.20);
+        fire(robot.powerShot - 130);
+        turnTo(4,0.20);
         fire(robot.powerShot - 125);
+        turnTo(10,0.20);
+        fire(robot.powerShot - 135);
         //fires at Power Shots
         robot.fWheelPower(0);
-        turnTo(30,0.25);
-        goToPosition(-6,0.25,false);
+        turnTo(28,0.35);
+        goToPosition(-4,0.20,false);
+        goToPosition(-1,0.10,false);
         int ring = ringScan(ground);
-        sleep(500);
-        turnTo(home, 0.15);
+        turnTo(home, 0.25);
         if(ring > 2){
-            goToLine(0.15);
-            turnTo(-20,0.25);
-            goToPosition(8.5,0.25, true);
+            goToLine(0.25);
+            turnTo(-20,0.35);
+            goToPosition(8,0.30, true);
             armToPosition(0);
             robot.claw.setPosition(robot.open);
             sleep(500);
-            goToPosition(-6,0.30,false);
+            goToPosition(-8,0.30,false);
         }else if(ring >= 1 && ring <= 2){
-            goToLine(0.15);
-            turnTo(home,0.25);
-            goToPosition(2,0.25, true);
+            goToLine(0.25);
+            turnTo(home,0.35);
+            goToPosition(1.5,0.25, true);
             armToPosition(0);
             robot.claw.setPosition(robot.open);
             sleep(500);
             goToPosition(-2,0.30,false);
         }else{
-            goToLine(0.15);
-            turnTo(-70,0.25);
+            goToLine(0.25);
+            turnTo(-70,0.35);
             goToPosition(1.5,0.30,true);
             armToPosition(0);
             robot.claw.setPosition(robot.open);
@@ -93,10 +95,12 @@ public class AutoRedPowerShotLeft extends LinearOpMode {
             robot.arm.setTargetPosition((int)((28 / (28 * 3.14)) * 125) * -33);
         }
         robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.arm.setPower(0.80);
-        while(robot.arm.isBusy()){
+        robot.arm.setPower(1.00);
+        while(opModeIsActive() && robot.arm.isBusy()){
             sleep(100);
         }
+        telemetry.addData("Moving Arm: ", "Done");
+        telemetry.update();
     }
 
     public void fire(double power){
@@ -110,11 +114,11 @@ public class AutoRedPowerShotLeft extends LinearOpMode {
         robot.fWheelPower(power);
         double velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity
         for(int i = 0; i < 2; i++){
-            while(velocity < (power - 10)){
+            while(opModeIsActive() && velocity < (power - 10)){
                 velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity update
                 sleep(100);
             }
-            while(velocity > (power + 10)){
+            while(opModeIsActive() && velocity > (power + 10)){
                 velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity update
                 sleep(100);
             }
@@ -137,10 +141,11 @@ public class AutoRedPowerShotLeft extends LinearOpMode {
         //moves forward until the color sensor fine the white line
         robot.setMode(2);
         robot.setPower(power, power);
-        while(robot.color.blue() < 25 && robot.color.green() < 25 && robot.color.red() < 25){
+        while(opModeIsActive() && robot.color.blue() < 20 && robot.color.green() < 20 && robot.color.red() < 20){
             sleep(10);
         }
         robot.setPower(0,0);
+        //reset motors to 0
         telemetry.addData("Finding Line: ", "Done");
         telemetry.update();
     }
@@ -154,21 +159,26 @@ public class AutoRedPowerShotLeft extends LinearOpMode {
         telemetry.update();
         //rotates the robot until the gyro fines the defined point then checks a few times
         robot.setMode(2);
-        for(int i = 0; i < 4; i++){
+        for(int i = 0; i < 2; i++){
             if(point > robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle){
-                while ((point - 1.5) > robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle) {
+                while (opModeIsActive() && (point - 1) > robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle) {
                     robot.setPower(power * -1, power);
                     sleep(10);
                 }
             }else if(point < robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle){
-                while ((point + 1.5) < robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle) {
+                while (opModeIsActive() && (point + 1) < robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle) {
                     robot.setPower(power, power * -1);
                     sleep(10);
                 }
             }
+            power *= 0.75;
+            if(power < 0.08){
+                power = 0.08;
+            }
         }
         robot.setPower(0,0);
         robot.setMode(0);
+        //reset motors to 0
         telemetry.addData("Turning: ", "Done");
         telemetry.update();
     }
@@ -185,10 +195,11 @@ public class AutoRedPowerShotLeft extends LinearOpMode {
         robot.setTargetPosition(decimeters);
         robot.setMode(1);
         robot.setPower(power, power);
-        while(robot.isBusy() && (!robot.atTarget() || absolutePosition)){
+        while(opModeIsActive() && robot.isBusy() && (!robot.atTarget() || absolutePosition)){
             sleep(10);
         }
         robot.setPower(0,0);
+        //reset motors the 0
         telemetry.addData("Running To Position: ", "Done");
         telemetry.addData("Absolute Position: ", "" + absolutePosition);
         telemetry.update();
@@ -206,6 +217,7 @@ public class AutoRedPowerShotLeft extends LinearOpMode {
         double dif = (ground - scan);
         telemetry.addData("Scanning For Rings: ", "Done");
         telemetry.update();
-        return (int)Math.round(dif / 2.2); //Thickness of the ring ~2.2 cm
+        return (int)Math.round(dif / 2);
+        //Thickness of the ring ~2 cm
     }
 }

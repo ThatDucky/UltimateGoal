@@ -35,7 +35,7 @@ public class DriveDefault extends OpMode {
     public void loop(){
         double deadZone = 0.13; //controller dead zone
         double velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity
-        double xOffSet = 0.525; //x off set for movement
+        double xOffSet = 0.70; //x off set for turning movement
 
         //lights default color
         robot.pattern = RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE;

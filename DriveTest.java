@@ -16,6 +16,8 @@ import java.lang.Math;
 
 public class DriveTest extends OpMode {
     Hardware robot = new Hardware();
+    public double zoomDis = 0;
+    public float home = 0;
     //calls the hardware class
 
     @Override
@@ -31,17 +33,23 @@ public class DriveTest extends OpMode {
     public void start(){
         telemetry.addData("Drive: ", "Ready");
         telemetry.update(); //setup telemetry and call it
+
     }
 
     @Override
     public void loop(){
         double deadZone = 0.13; //controller dead zone
         double velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity
-        double xOffSet = 0.525; //x off set for movement
-        double angle = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle;
-        double shot = 0.0;
-        double dx = 1.65 / Math.cos(angle);
-        double dy = 0.0;
+        double xOffSet = 0.70; //x off set for turning movement
+        double zoomDisNew = robot.zoom.getDistance(DistanceUnit.CM);
+
+        if(zoomDisNew < 400){
+            zoomDis = zoomDisNew;
+        }
+
+        if(gamepad1.y){
+            home = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle;;
+        }
 
         //lights default color
         robot.pattern = RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE;
@@ -91,16 +99,21 @@ public class DriveTest extends OpMode {
 
         if(gamepad1.left_trigger > 0){
             //set Fly Wheel To Spin Up if Left Trigger Is Held
-            dy = 0.90;
-            shot = robot.calculateVelocity(dx,dy);
-            robot.fWheelPower(shot);
+            if(gamepad1.dpad_down){
+                //slows down even more if dpad down is held
+                robot.fWheelPower(robot.highGoal - 500);
+            }else if(gamepad1.dpad_up){
+                //Speeds up even more if dpad up is held
+                robot.fWheelPower(robot.highGoal - 100);
+            }else{
+                //aim for high goal
+                robot.fWheelPower(robot.highGoal - 300);
+            }
             //rev color
             robot.pattern = RevBlinkinLedDriver.BlinkinPattern.RED;
         }else if(gamepad1.left_bumper){
             //sets the fly wheel speed to the power shot goal if bummer is held
-            dy = 0.77;
-            shot = robot.calculateVelocity(dx,dy);
-            robot.fWheelPower(shot);
+            robot.fWheelPower(robot.powerShot - 150);
             //rev color
             robot.pattern = RevBlinkinLedDriver.BlinkinPattern.BREATH_RED;
         }else{
@@ -109,7 +122,17 @@ public class DriveTest extends OpMode {
         }
 
         if(gamepad1.right_trigger > 0){
-            if(velocity <= 100.0 || (velocity >= (shot - 100) && velocity <= (shot + 100))){
+            if(gamepad1.left_trigger > 0 && ((velocity >= (robot.highGoal - 315) && velocity <= (robot.highGoal - 285) || (gamepad1.dpad_down && velocity >= (robot.highGoal - 515) && velocity <= (robot.highGoal - 485) || (gamepad1.dpad_up && velocity >= (robot.highGoal - 115) && velocity <= (robot.highGoal - 85)))))){
+                //sets the  servo to fire
+                robot.launcher.setPosition(robot.fire);
+                //rev color
+                robot.pattern = RevBlinkinLedDriver.BlinkinPattern.HEARTBEAT_RED;
+            }else if(gamepad1.left_bumper && velocity >= (robot.powerShot - 165) && velocity <= (robot.powerShot - 125)){
+                //sets the  servo to fire
+                robot.launcher.setPosition(robot.fire);
+                //rev color
+                robot.pattern = RevBlinkinLedDriver.BlinkinPattern.HEARTBEAT_RED;
+            }else if(velocity <= 100.0){
                 //sets the  servo to fire
                 robot.launcher.setPosition(robot.fire);
                 //rev color
@@ -135,7 +158,8 @@ public class DriveTest extends OpMode {
 
         //set up the display telemetry
         telemetry.addData("Left Stick Position: ", gamepad1.left_stick_x + " " + gamepad1.left_stick_y);
-        telemetry.addData("Velocity: ", "" + velocity);
+        telemetry.addData("Velocity: ", velocity);
+        telemetry.addData("Sonic Distance: ", zoomDis);
         //telemetry.addData("Gyro: ", "" + robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
         //telemetry.addData("LED: ", robot.pattern.toString());
         //telemetry.addData("Distance: ",""+ robot.dis.getDistance(DistanceUnit.CM));
