@@ -42,17 +42,23 @@ public class DriveTest extends OpMode {
         double velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity
         double xOffSet = 0.70; //x off set for turning movement
         double zoomDisNew = robot.zoom.getDistance(DistanceUnit.CM);
+        double v = 0;
+
+        //lights default color
+        robot.pattern = RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE;
 
         if(zoomDisNew < 400){
             zoomDis = zoomDisNew;
         }
 
         if(gamepad1.y){
-            home = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle;;
+            //resets the imu
+            robot.resetImu();
+            if(!(robot.imu.isGyroCalibrated())){
+                //changes the lights while the imu is resetting
+                robot.pattern = RevBlinkinLedDriver.BlinkinPattern.FIRE_LARGE;
+            }
         }
-
-        //lights default color
-        robot.pattern = RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE;
 
         //gets x and y values of the game pad and offsets the y value by a percent of the x
         double left = (gamepad1.left_stick_y * -1) + (gamepad1.left_stick_x * xOffSet);
@@ -99,21 +105,20 @@ public class DriveTest extends OpMode {
 
         if(gamepad1.left_trigger > 0){
             //set Fly Wheel To Spin Up if Left Trigger Is Held
-            if(gamepad1.dpad_down){
-                //slows down even more if dpad down is held
-                robot.fWheelPower(robot.highGoal - 500);
-            }else if(gamepad1.dpad_up){
-                //Speeds up even more if dpad up is held
-                robot.fWheelPower(robot.highGoal - 100);
-            }else{
-                //aim for high goal
-                robot.fWheelPower(robot.highGoal - 300);
-            }
+            double angle = Math.abs(home - robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
+            double dy = 0.90;
+            double dx = (3.58 - (((Math.cos(angle) * zoomDis) / Math.cos(angle)) + 0.15)) / Math.cos(angle);
+            v = robot.calculateVelocity(dx,dy);
+            robot.fWheelPower(v);
             //rev color
             robot.pattern = RevBlinkinLedDriver.BlinkinPattern.RED;
         }else if(gamepad1.left_bumper){
             //sets the fly wheel speed to the power shot goal if bummer is held
-            robot.fWheelPower(robot.powerShot - 150);
+            double angle = Math.abs(home - robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
+            double dy = 0.77;
+            double dx = (3.58 - (((Math.cos(angle) * zoomDis) / Math.cos(angle)) + 0.15)) / Math.cos(angle);
+            v = robot.calculateVelocity(dx,dy);
+            robot.fWheelPower(v);
             //rev color
             robot.pattern = RevBlinkinLedDriver.BlinkinPattern.BREATH_RED;
         }else{
@@ -122,17 +127,7 @@ public class DriveTest extends OpMode {
         }
 
         if(gamepad1.right_trigger > 0){
-            if(gamepad1.left_trigger > 0 && ((velocity >= (robot.highGoal - 315) && velocity <= (robot.highGoal - 285) || (gamepad1.dpad_down && velocity >= (robot.highGoal - 515) && velocity <= (robot.highGoal - 485) || (gamepad1.dpad_up && velocity >= (robot.highGoal - 115) && velocity <= (robot.highGoal - 85)))))){
-                //sets the  servo to fire
-                robot.launcher.setPosition(robot.fire);
-                //rev color
-                robot.pattern = RevBlinkinLedDriver.BlinkinPattern.HEARTBEAT_RED;
-            }else if(gamepad1.left_bumper && velocity >= (robot.powerShot - 165) && velocity <= (robot.powerShot - 125)){
-                //sets the  servo to fire
-                robot.launcher.setPosition(robot.fire);
-                //rev color
-                robot.pattern = RevBlinkinLedDriver.BlinkinPattern.HEARTBEAT_RED;
-            }else if(velocity <= 100.0){
+            if(velocity <= (v - 10) && velocity >= (v + 10)){
                 //sets the  servo to fire
                 robot.launcher.setPosition(robot.fire);
                 //rev color

@@ -205,6 +205,7 @@ public class Hardware {
     }
 
     public static double calculateVelocity(double dx, double dy){
+        //uses the distance to the wall dx and the height of the shot dy to calculate the velocity of the flywheel
         double a = -0.7622205798;
         double b = 1.438371147 * dy;
         double d = 9.81 * Math.pow(dx,2);
@@ -216,5 +217,12 @@ public class Hardware {
 
         velocity = ((velocity * 100) / (28 / (9 * Math.PI))) * 1.00;
         return velocity;
+    }
+
+    public void resetImu(){
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        parameters.mode = BNO055IMU.SensorMode.IMU;
+        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        imu.initialize(parameters);
     }
 }
