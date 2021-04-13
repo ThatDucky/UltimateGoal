@@ -145,7 +145,7 @@ public class Hardware {
 
     public void setTargetPosition(double decimeters) {
         //set the target position of all the motors at once
-        int target = (int) (Math.round((decimeters * 10) * ticksPerCentimeters));
+        int target = (int)(Math.round((decimeters * 10) * ticksPerCentimeters));
         one.setTargetPosition(one.getCurrentPosition() + target);
         two.setTargetPosition(two.getCurrentPosition() + target);
         three.setTargetPosition(three.getCurrentPosition() + target);
@@ -158,7 +158,7 @@ public class Hardware {
     }
 
     public boolean atTarget() {
-        //returns true if any motor is at target postition
+        //returns true if any motor is at target position
         if (one.getCurrentPosition() == one.getTargetPosition() || two.getCurrentPosition() == two.getTargetPosition() || three.getCurrentPosition() == three.getTargetPosition() || four.getCurrentPosition() == four.getTargetPosition()) {
             return true;
         }
@@ -208,14 +208,15 @@ public class Hardware {
         //uses the distance to the wall dx and the height of the shot dy to calculate the velocity of the flywheel
         double a = -0.7622205798;
         double b = 1.438371147 * dy;
-        double d = 9.81 * Math.pow(dx,2);
-        double SA = ((-1 * Math.pow(b,3)) / 27 * Math.pow(a,3)) - (d / (2 * a));
+        double c = 9.81 * Math.pow(dx,2);
+        //Set Up each variable used in the cubic quadratic
+        double SA = ((-1 * Math.pow(b,3)) / 27 * Math.pow(a,3)) - (c / (2 * a));
         double SB = -1 * (Math.pow(b,2) / (9 * Math.pow(a,2)));
         double SC = b / (3 * a);
-
+        //Set up each section in the cubic quadratic
         double velocity = Math.cbrt(SA + Math.sqrt(Math.pow(SA,2) + Math.pow(SB,3))) + Math.cbrt(SA + Math.sqrt(Math.pow(SA,2) - Math.pow(SB,3))) - SC;
-
         velocity = ((velocity * 100) / (28 / (9 * Math.PI))) * 1.00;
+        //using the cubic quadratic to calculate velocity in m/s and then converting that to a more usable number.
         return velocity;
     }
 

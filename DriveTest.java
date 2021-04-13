@@ -51,13 +51,16 @@ public class DriveTest extends OpMode {
             zoomDis = zoomDisNew;
         }
 
+        if(!(robot.imu.isGyroCalibrated())){
+            //set display while imu is resetting
+            telemetry.addData("IMU Is Calibrating ", "Do Not Move The Robot");
+            //changes the lights while the imu is resetting
+            robot.pattern = RevBlinkinLedDriver.BlinkinPattern.FIRE_LARGE;
+        }
+
         if(gamepad1.y){
             //resets the imu
             robot.resetImu();
-            if(!(robot.imu.isGyroCalibrated())){
-                //changes the lights while the imu is resetting
-                robot.pattern = RevBlinkinLedDriver.BlinkinPattern.FIRE_LARGE;
-            }
         }
 
         //gets x and y values of the game pad and offsets the y value by a percent of the x
