@@ -41,13 +41,13 @@ public class DriveTest extends OpMode {
         double deadZone = 0.13; //controller dead zone
         double velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity
         double xOffSet = 0.70; //x off set for turning movement
-        double zoomDisNew = robot.zoom.getDistance(DistanceUnit.CM);
+        double zoomDisNew = robot.zoom.getDistance(DistanceUnit.METER);
         double v = 0;
 
         //lights default color
         robot.pattern = RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE;
 
-        if(zoomDisNew < 400){
+        if(zoomDisNew < 10){
             zoomDis = zoomDisNew;
         }
 
@@ -115,6 +115,8 @@ public class DriveTest extends OpMode {
             robot.fWheelPower(v);
             //rev color
             robot.pattern = RevBlinkinLedDriver.BlinkinPattern.RED;
+
+            telemetry.addData("Target: ", v);
         }else if(gamepad1.left_bumper){
             //sets the fly wheel speed to the power shot goal if bummer is held
             double angle = Math.abs(home - robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
@@ -124,13 +126,16 @@ public class DriveTest extends OpMode {
             robot.fWheelPower(v);
             //rev color
             robot.pattern = RevBlinkinLedDriver.BlinkinPattern.BREATH_RED;
+
+            telemetry.addData("Target: ", v);
         }else{
             //Reset fly wheel if left Trigger is not pressed
             robot.fWheelPower(0);
+            v = 0;
         }
 
         if(gamepad1.right_trigger > 0){
-            if(velocity <= (v - 10) && velocity >= (v + 10)){
+            if(velocity >= (v - 10) && velocity <= (v + 10)){
                 //sets the  servo to fire
                 robot.launcher.setPosition(robot.fire);
                 //rev color
