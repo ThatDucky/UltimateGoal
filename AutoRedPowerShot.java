@@ -31,17 +31,19 @@ public class AutoRedPowerShot extends LinearOpMode {
         //start distance from the ground
         float home = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle;
         //start home position
+        double height = 0.77;
+        //power shot height
         waitForStart();
 
         goToLine(0.20);
         turnTo(home, 0.20);
         goToPosition(-1.25,0.20,false);
         turnTo(home,0.20);
-        fire(robot.powerShot - 130);
+        fire(height);
         turnTo(4,0.20);
-        fire(robot.powerShot - 125);
+        fire(height);
         turnTo(10,0.20);
-        fire(robot.powerShot - 135);
+        fire(height);
         //fires at Power Shots
         robot.fWheelPower(0);
         turnTo(28,0.35);
@@ -103,7 +105,7 @@ public class AutoRedPowerShot extends LinearOpMode {
         telemetry.update();
     }
 
-    public void fire(double power){
+    public void fire(double shotH){
         //lights for the action stated
         robot.pattern = RevBlinkinLedDriver.BlinkinPattern.RED;
         robot.revBlinkinLedDriver.setPattern(robot.pattern);
@@ -111,20 +113,30 @@ public class AutoRedPowerShot extends LinearOpMode {
         telemetry.addData("Shooting: ", "In Progress");
         telemetry.update();
         //spins up the fly wheel and fires the servo then resets everything
+        double angle = Math.abs(robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
+        double dy = shotH;
+        double dx = (3.58 - (((Math.cos(angle) * sonicScan()) / Math.cos(angle)) + 0.30)) / Math.cos(angle);
+        double power = robot.calculateVelocity(dx,dy);
+        //calculates the offset for the power shot goal
         robot.fWheelPower(power);
         double velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity
         for(int i = 0; i < 2; i++){
-            while(opModeIsActive() && velocity < (power - 10)){
+            while(velocity < (power - 2.5)){
+                telemetry.addData("V: ", "" + ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2));
+                telemetry.update();
                 velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity update
-                sleep(100);
+                sleep(500);
             }
-            while(opModeIsActive() && velocity > (power + 10)){
+            while(velocity > (power + 2.5)){
+                telemetry.addData("V: ", "" + ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2));
+                telemetry.update();
                 velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity update
-                sleep(100);
+                sleep(500);
             }
         }
-        robot.launcher.setPosition(robot.fire);
         sleep(1000);
+        robot.launcher.setPosition(robot.fire);
+        sleep(750);
         robot.launcher.setPosition(robot.rest);
         sleep(250);
         telemetry.addData("Shooting: ", "Done");
@@ -219,5 +231,16 @@ public class AutoRedPowerShot extends LinearOpMode {
         telemetry.update();
         return (int)Math.round(dif / 2);
         //Thickness of the ring ~2 cm
+    }
+
+    public int sonicScan(){
+        double distance = 0;
+        for(int i = 0; i < 10; i++){
+            if(robot.zoom.getDistance(DistanceUnit.CM) < 400){
+                distance = robot.zoom.getDistance(DistanceUnit.CM);
+                sleep(25);
+            }
+        }
+        return (int)distance;
     }
 }

@@ -121,7 +121,7 @@ public class DriveTest extends OpMode {
             //sets the fly wheel speed to the power shot goal if bummer is held
             double angle = Math.abs(home - robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
             double dy = 0.77;
-            double dx = (3.58 - (((Math.cos(angle) * zoomDis) / Math.cos(angle)) + 0.15)) / Math.cos(angle);
+            double dx = (3.58 - (((Math.cos(angle) * zoomDis) / Math.cos(angle)) + 0.30)) / Math.cos(angle);
             v = robot.calculateVelocity(dx,dy);
             robot.fWheelPower(v);
             //rev color

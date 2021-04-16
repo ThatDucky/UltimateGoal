@@ -121,7 +121,7 @@ public class AutoTest extends LinearOpMode {
         //spins up the fly wheel and fires the servo then resets everything
         double angle = Math.abs(robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
         double dy = shotH;
-        double dx = (3.58 - (((Math.cos(angle) * sonicScan()) / Math.cos(angle)) + 0.15)) / Math.cos(angle);
+        double dx = (3.58 - (((Math.cos(angle) * sonicScan()) / Math.cos(angle)) + 0.30)) / Math.cos(angle);
         double power = robot.calculateVelocity(dx,dy);
         //calculates the offset for the power shot goal
         robot.fWheelPower(power);

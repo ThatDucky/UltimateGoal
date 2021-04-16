@@ -221,6 +221,7 @@ public class Hardware {
     }
 
     public void resetImu(){
+        //go through the reboot step for the imu
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.mode = BNO055IMU.SensorMode.IMU;
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
