@@ -41,15 +41,11 @@ public class DriveTest extends OpMode {
         double deadZone = 0.13; //controller dead zone
         double velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity
         double xOffSet = 0.70; //x off set for turning movement
-        double zoomDisNew = robot.zoom.getDistance(DistanceUnit.METER);
+        double zoomDis = robot.zoom.getDistance(DistanceUnit.METER);
         double v = 0;
 
         //lights default color
         robot.pattern = RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE;
-
-        if(zoomDisNew < 10){
-            zoomDis = zoomDisNew;
-        }
 
         if(!(robot.imu.isGyroCalibrated())){
             //set display while imu is resetting
@@ -162,7 +158,7 @@ public class DriveTest extends OpMode {
         //set up the display telemetry
         telemetry.addData("Left Stick Position: ", gamepad1.left_stick_x + " " + gamepad1.left_stick_y);
         telemetry.addData("Velocity: ", velocity);
-        telemetry.addData("Sonic Distance: ", zoomDis);
+        telemetry.addData("2M Distance: ", zoomDis);
         //telemetry.addData("Gyro: ", "" + robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
         //telemetry.addData("LED: ", robot.pattern.toString());
         //telemetry.addData("Distance: ",""+ robot.dis.getDistance(DistanceUnit.CM));

@@ -113,9 +113,10 @@ public class AutoRedPowerShot extends LinearOpMode {
         telemetry.addData("Shooting: ", "In Progress");
         telemetry.update();
         //spins up the fly wheel and fires the servo then resets everything
+        double sonic = robot.zoom.getDistance(DistanceUnit.METER);
         double angle = Math.abs(robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
         double dy = shotH;
-        double dx = (3.58 - (((Math.cos(angle) * sonicScan()) / Math.cos(angle)) + 0.30)) / Math.cos(angle);
+        double dx = (3.58 - (((Math.cos(angle) * sonic) / Math.cos(angle)) + 0.30)) / Math.cos(angle);
         double power = robot.calculateVelocity(dx,dy);
         //calculates the offset for the power shot goal
         robot.fWheelPower(power);
@@ -233,14 +234,4 @@ public class AutoRedPowerShot extends LinearOpMode {
         //Thickness of the ring ~2 cm
     }
 
-    public int sonicScan(){
-        double distance = 0;
-        for(int i = 0; i < 10; i++){
-            if(robot.zoom.getDistance(DistanceUnit.CM) < 400){
-                distance = robot.zoom.getDistance(DistanceUnit.CM);
-                sleep(25);
-            }
-        }
-        return (int)distance;
-    }
 }

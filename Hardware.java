@@ -26,7 +26,7 @@ public class Hardware {
     double powerShot = 1000;
 
     //Sensors
-    public ModernRoboticsI2cRangeSensor zoom = null;
+    public DistanceSensor zoom = null;
     public ColorSensor color = null;
     public DistanceSensor dis = null;
     public BNO055IMU imu = null;
@@ -87,7 +87,7 @@ public class Hardware {
         dis = hwMap.get(DistanceSensor.class, "dis"); //Ring Thickness is 2cm
 
         //Sonic init
-        zoom = hwMap.get(ModernRoboticsI2cRangeSensor.class, "zoom");
+        zoom = hwMap.get(DistanceSensor.class, "zoom");
 
         // define and initialize drive motors
         one = hwMap.get(DcMotorEx.class, "one");

@@ -43,7 +43,7 @@ public class AutoTest extends LinearOpMode {
         turnTo(home,0.20);
          */
         double angle = Math.abs(robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
-        telemetry.addData("V: ",robot.calculateVelocity(3.58 - ((Math.cos(angle) * sonicScan()) / Math.cos(angle)), height));
+        telemetry.addData("V: ",robot.calculateVelocity(3.58 - ((Math.cos(angle) * robot.zoom.getDistance(DistanceUnit.METER)) / Math.cos(angle)), height));
         telemetry.update();
         sleep(2500);
         fire(height);
@@ -121,7 +121,7 @@ public class AutoTest extends LinearOpMode {
         //spins up the fly wheel and fires the servo then resets everything
         double angle = Math.abs(robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
         double dy = shotH;
-        double dx = (3.58 - (((Math.cos(angle) * sonicScan()) / Math.cos(angle)) + 0.30)) / Math.cos(angle);
+        double dx = (3.58 - (((Math.cos(angle) * robot.zoom.getDistance(DistanceUnit.METER)) / Math.cos(angle)) + 0.30)) / Math.cos(angle);
         double power = robot.calculateVelocity(dx,dy);
         //calculates the offset for the power shot goal
         robot.fWheelPower(power);
@@ -237,16 +237,5 @@ public class AutoTest extends LinearOpMode {
         telemetry.update();
         return (int)Math.round(dif / 2);
         //Thickness of the ring ~2 cm
-    }
-
-    public int sonicScan(){
-        double distance = 0;
-        for(int i = 0; i < 10; i++){
-            if(robot.zoom.getDistance(DistanceUnit.CM) < 400){
-                distance = robot.zoom.getDistance(DistanceUnit.CM);
-                sleep(25);
-            }
-        }
-        return (int)distance;
     }
 }
