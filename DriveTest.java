@@ -42,7 +42,7 @@ public class DriveTest extends OpMode {
         double velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity
         double xOffSet = 0.70; //x off set for turning movement
         double zoomDis = robot.zoom.getDistance(DistanceUnit.METER);
-        double v = 0;
+        double v;
 
         //lights default color
         robot.pattern = RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE;

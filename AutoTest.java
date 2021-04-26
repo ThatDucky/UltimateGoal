@@ -36,52 +36,48 @@ public class AutoTest extends LinearOpMode {
         float home = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle;
         //start home position
         waitForStart();
-        /*
-        goToLine(0.25);
-        turnTo(home, 0.20);
-        goToPosition(-1.5,0.20,false);
-        turnTo(home,0.20);
-         */
-        double angle = Math.abs(robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
-        telemetry.addData("V: ",robot.calculateVelocity(3.58 - ((Math.cos(angle) * robot.zoom.getDistance(DistanceUnit.METER)) / Math.cos(angle)), height));
-        telemetry.update();
-        sleep(2500);
-        fire(height);
 
+        goToLine(0.20);
+        turnTo(home, 0.20);
+        goToPosition(-1.25,0.20,false);
+        turnTo(home,0.20);
+        fire(height);
+        turnTo(4,0.20);
+        fire(height);
+        turnTo(10,0.20);
+        fire(height);
         //fires at Power Shots
         robot.fWheelPower(0);
-        /*
-        //powers off the flywheel
-        turnTo(30,0.30);
-        goToPosition(-5.5,0.25,false);
+        turnTo(28,0.35);
+        goToPosition(-4,0.20,false);
+        goToPosition(-1,0.10,false);
         int ring = ringScan(ground);
-        turnTo(home, 0.20);
+        turnTo(home, 0.25);
         if(ring > 2){
             goToLine(0.25);
-            turnTo(-20,0.30);
+            turnTo(-20,0.35);
             goToPosition(8,0.30, true);
             armToPosition(0);
             robot.claw.setPosition(robot.open);
             sleep(500);
-            goToPosition(-6,0.30,false);
+            goToPosition(-8,0.30,false);
         }else if(ring >= 1 && ring <= 2){
             goToLine(0.25);
-            turnTo(home,0.30);
-            goToPosition(1.5,0.30, true);
+            turnTo(home,0.35);
+            goToPosition(1.5,0.25, true);
             armToPosition(0);
             robot.claw.setPosition(robot.open);
             sleep(500);
             goToPosition(-2,0.30,false);
         }else{
             goToLine(0.25);
-            turnTo(-70,0.30);
+            turnTo(-70,0.35);
             goToPosition(1.5,0.30,true);
             armToPosition(0);
             robot.claw.setPosition(robot.open);
             sleep(500);
             goToPosition(-2,0.30,false);
         }
-         */
     }
 
     public void armToPosition(int pos){
@@ -140,11 +136,10 @@ public class AutoTest extends LinearOpMode {
                 sleep(500);
             }
         }
-        sleep(1000);
+        sleep(500);
         robot.launcher.setPosition(robot.fire);
-        sleep(750);
+        sleep(500);
         robot.launcher.setPosition(robot.rest);
-        sleep(250);
         telemetry.addData("Shooting: ", "Done");
         telemetry.update();
     }

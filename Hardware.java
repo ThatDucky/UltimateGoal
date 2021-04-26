@@ -84,9 +84,9 @@ public class Hardware {
         color = hwMap.get(ColorSensor.class, "color");
 
         //distance init
-        dis = hwMap.get(DistanceSensor.class, "dis"); //Ring Thickness is 2cm
+        dis = hwMap.get(DistanceSensor.class, "dis"); //Ring Thickness is 2cm/'
 
-        //Sonic init
+        //other distance that was a sonic sensor but is now no longer a sonic sensor init
         zoom = hwMap.get(DistanceSensor.class, "zoom");
 
         // define and initialize drive motors
