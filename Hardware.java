@@ -216,7 +216,7 @@ public class Hardware {
         //Set up each section in the cubic quadratic
         double velocity = Math.cbrt(SA + Math.sqrt(Math.pow(SA,2) + Math.pow(SB,3))) + Math.cbrt(SA + Math.sqrt(Math.pow(SA,2) - Math.pow(SB,3))) - SC;
         velocity = ((velocity * 100) / (28 / (9 * Math.PI))) * 1.00;
-        //using the cubic quadratic to calculate velocity in m/s and then converting that to a more usable number.
+        //using the cubic quadratic to calculate velocity in m/s and then converting that to a more usable number Encoder Ticks/s
         return velocity;
     }
 
