@@ -16,14 +16,15 @@ import java.lang.Math;
 
 public class DriveTest extends OpMode {
     Hardware robot = new Hardware();
-    public double zoomDis = 0;
-    public float home = 0;
     //calls the hardware class
+    public float home = 0;
+    //sets the home value to be used for velocity
 
     @Override
     public void init(){
         robot.init(hardwareMap);
         robot.setMode(2); //set to run using encoders
+
         //rev color
         robot.pattern = RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE;
         robot.revBlinkinLedDriver.setPattern(robot.pattern);
@@ -33,7 +34,6 @@ public class DriveTest extends OpMode {
     public void start(){
         telemetry.addData("Drive: ", "Ready");
         telemetry.update(); //setup telemetry and call it
-
     }
 
     @Override
@@ -159,6 +159,7 @@ public class DriveTest extends OpMode {
         telemetry.addData("Left Stick Position: ", gamepad1.left_stick_x + " " + gamepad1.left_stick_y);
         telemetry.addData("Velocity: ", velocity);
         telemetry.addData("2M Distance: ", zoomDis);
+        telemetry.addData("Velocity Target: ", v);
         //telemetry.addData("Gyro: ", "" + robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
         //telemetry.addData("LED: ", robot.pattern.toString());
         //telemetry.addData("Distance: ",""+ robot.dis.getDistance(DistanceUnit.CM));
