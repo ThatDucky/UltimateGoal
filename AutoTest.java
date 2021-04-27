@@ -116,27 +116,28 @@ public class AutoTest extends LinearOpMode {
         telemetry.update();
         //spins up the fly wheel and fires the servo then resets everything
         double angle = Math.abs(robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
+        double dis = robot.zoom.getDistance(DistanceUnit.METER);
         double dy = shotH;
-        double dx = (3.58 - (((Math.cos(angle) * robot.zoom.getDistance(DistanceUnit.METER)) / Math.cos(angle)) + 0.30)) / Math.cos(angle);
+        double dx = ((3.58 - ((dis * Math.cos(angle)) / Math.sin(90 - angle))) * Math.sin(angle)) / Math.sin(90 - angle);
         double power = robot.calculateVelocity(dx,dy);
         //calculates the offset for the power shot goal
         robot.fWheelPower(power);
         double velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity
         for(int i = 0; i < 2; i++){
-            while(velocity < (power - 2.5)){
+            while(velocity < (power - 5)){
                 telemetry.addData("V: ", "" + ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2));
                 telemetry.update();
                 velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity update
-                sleep(500);
+                sleep(100);
             }
-            while(velocity > (power + 2.5)){
+            while(velocity > (power + 5)){
                 telemetry.addData("V: ", "" + ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2));
                 telemetry.update();
                 velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity update
-                sleep(500);
+                sleep(100);
             }
         }
-        sleep(500);
+        sleep(250);
         robot.launcher.setPosition(robot.fire);
         sleep(500);
         robot.launcher.setPosition(robot.rest);

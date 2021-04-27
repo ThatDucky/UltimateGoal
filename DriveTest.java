@@ -106,24 +106,20 @@ public class DriveTest extends OpMode {
             //set Fly Wheel To Spin Up if Left Trigger Is Held
             double angle = Math.abs(home - robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
             double dy = 0.90;
-            double dx = (3.58 - (((Math.cos(angle) * zoomDis) / Math.cos(angle)) + 0.15)) / Math.cos(angle);
+            double dx = ((3.58 - ((zoomDis * Math.cos(angle)) / Math.sin(90 - angle))) * Math.sin(angle)) / Math.sin(90 - angle);
             v = robot.calculateVelocity(dx,dy);
             robot.fWheelPower(v);
             //rev color
             robot.pattern = RevBlinkinLedDriver.BlinkinPattern.RED;
-
-            telemetry.addData("Target: ", v);
         }else if(gamepad1.left_bumper){
             //sets the fly wheel speed to the power shot goal if bummer is held
             double angle = Math.abs(home - robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
             double dy = 0.77;
-            double dx = (3.58 - (((Math.cos(angle) * zoomDis) / Math.cos(angle)) + 0.30)) / Math.cos(angle);
+            double dx = ((3.58 - ((zoomDis * Math.cos(angle)) / Math.sin(90 - angle))) * Math.sin(angle)) / Math.sin(90 - angle);
             v = robot.calculateVelocity(dx,dy);
             robot.fWheelPower(v);
             //rev color
             robot.pattern = RevBlinkinLedDriver.BlinkinPattern.BREATH_RED;
-
-            telemetry.addData("Target: ", v);
         }else{
             //Reset fly wheel if left Trigger is not pressed
             robot.fWheelPower(0);
