@@ -48,6 +48,7 @@ public class AutoTest extends LinearOpMode {
         fire(height);
         //fires at Power Shots
         robot.fWheelPower(0);
+        //resets flywheel to 0
         turnTo(28,0.35);
         goToPosition(-4,0.20,false);
         goToPosition(-1,0.10,false);

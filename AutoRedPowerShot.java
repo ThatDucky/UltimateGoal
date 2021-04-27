@@ -44,6 +44,7 @@ public class AutoRedPowerShot extends LinearOpMode {
         fire(robot.powerShot - 125);
         //fires at Power Shots
         robot.fWheelPower(0);
+        //resets flywheel to 0
         turnTo(28,0.35);
         goToPosition(-4,0.20,false);
         goToPosition(-1,0.10,false);
@@ -128,9 +129,9 @@ public class AutoRedPowerShot extends LinearOpMode {
         }
         sleep(250);
         robot.launcher.setPosition(robot.fire);
-        sleep(750);
+        sleep(500);
         robot.launcher.setPosition(robot.rest);
-        sleep(250);
+        sleep(500);
         telemetry.addData("Shooting: ", "Done");
         telemetry.update();
     }
