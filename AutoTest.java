@@ -41,11 +41,11 @@ public class AutoTest extends LinearOpMode {
         turnTo(home, 0.20);
         goToPosition(-1.25,0.20,false);
         turnTo(home,0.20);
-        fire(height);
+        fire(height, 2.10);
         turnTo(4,0.20);
-        fire(height);
+        fire(height, 2.30);
         turnTo(10,0.20);
-        fire(height);
+        fire(height, 2.10);
         //fires at Power Shots
         robot.fWheelPower(0);
         //resets flywheel to 0
@@ -73,7 +73,7 @@ public class AutoTest extends LinearOpMode {
         }else{
             goToLine(0.25);
             turnTo(-70,0.35);
-            goToPosition(1.5,0.30,true);
+            goToPosition(0.5,0.30,true);
             armToPosition(0);
             robot.claw.setPosition(robot.open);
             sleep(500);
@@ -102,13 +102,13 @@ public class AutoTest extends LinearOpMode {
         robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.arm.setPower(1.00);
         while(robot.arm.isBusy()){
-            sleep(100);
+            sleep(10);
         }
         telemetry.addData("Moving Arm: ", "Done");
         telemetry.update();
     }
 
-    public void fire(double shotH){
+    public void fire(double dy, double dx){
         //lights for the action stated
         robot.pattern = RevBlinkinLedDriver.BlinkinPattern.RED;
         robot.revBlinkinLedDriver.setPattern(robot.pattern);
@@ -118,24 +118,22 @@ public class AutoTest extends LinearOpMode {
         //spins up the fly wheel and fires the servo then resets everything
         double angle = Math.abs(robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
         double dis = robot.zoom.getDistance(DistanceUnit.METER);
-        double dy = shotH;
-        double dx = ((3.58 - ((dis * Math.cos(angle)) / Math.sin(90 - angle))) * Math.sin(angle)) / Math.sin(90 - angle);
         double power = robot.calculateVelocity(dx,dy);
         //calculates the offset for the power shot goal
         robot.fWheelPower(power);
         double velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity
         for(int i = 0; i < 2; i++){
-            while(velocity < (power - 5)){
+            while(velocity < (power - 3)){
                 telemetry.addData("V: ", "" + ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2));
                 telemetry.update();
                 velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity update
-                sleep(100);
+                sleep(250);
             }
-            while(velocity > (power + 5)){
+            while(velocity > (power + 3)){
                 telemetry.addData("V: ", "" + ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2));
                 telemetry.update();
                 velocity = ((robot.fWheelOne.getVelocity() + robot.fWheelTwo.getVelocity()) / 2); //flywheels avg velocity update
-                sleep(100);
+                sleep(250);
             }
         }
         sleep(250);
@@ -156,7 +154,7 @@ public class AutoTest extends LinearOpMode {
         //moves forward until the color sensor fine the white line
         robot.setMode(2);
         robot.setPower(power, power);
-        while(robot.color.blue() < 25 && robot.color.green() < 25 && robot.color.red() < 25){
+        while(robot.color.blue() < 15 && robot.color.green() < 15 && robot.color.red() < 15){
             sleep(10);
         }
         robot.setPower(0,0);
@@ -176,19 +174,15 @@ public class AutoTest extends LinearOpMode {
         robot.setMode(2);
         for(int i = 0; i < 2; i++){
             if(point > robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle){
-                while ((point - 1) > robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle) {
+                while ((point - 1.5) > robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle) {
                     robot.setPower(power * -1, power);
                     sleep(10);
                 }
             }else if(point < robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle){
-                while ((point + 1) < robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle) {
+                while ((point + 1.5) < robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle) {
                     robot.setPower(power, power * -1);
                     sleep(10);
                 }
-            }
-            power *= 0.75;
-            if(power < 0.08){
-                power = 0.08;
             }
         }
         robot.setPower(0,0);

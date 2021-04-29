@@ -11,7 +11,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 import java.lang.Math;
 
-//@Disabled
+@Disabled
 @TeleOp(name = "DriveTest", group = "Drive")
 
 public class DriveTest extends OpMode {
@@ -106,7 +106,7 @@ public class DriveTest extends OpMode {
             //set Fly Wheel To Spin Up if Left Trigger Is Held
             double angle = Math.abs(home - robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
             double dy = 0.90;
-            double dx = ((3.58 - ((zoomDis * Math.cos(angle)) / Math.sin(90 - angle))) * Math.sin(angle)) / Math.sin(90 - angle);
+            double dx = (3.58 - ((zoomDis * Math.cos(angle)) + 0.25)) / Math.cos(angle);
             v = robot.calculateVelocity(dx,dy);
             robot.fWheelPower(v);
             //rev color
@@ -115,7 +115,7 @@ public class DriveTest extends OpMode {
             //sets the fly wheel speed to the power shot goal if bummer is held
             double angle = Math.abs(home - robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
             double dy = 0.77;
-            double dx = ((3.58 - ((zoomDis * Math.cos(angle)) / Math.sin(90 - angle))) * Math.sin(angle)) / Math.sin(90 - angle);
+            double dx = (3.58 - ((zoomDis * Math.cos(angle)) + 0.25)) / Math.cos(angle);
             v = robot.calculateVelocity(dx,dy);
             robot.fWheelPower(v);
             //rev color
@@ -158,7 +158,7 @@ public class DriveTest extends OpMode {
         telemetry.addData("Velocity Target: ", v);
         //telemetry.addData("Gyro: ", "" + robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
         //telemetry.addData("LED: ", robot.pattern.toString());
-        //telemetry.addData("Distance: ",""+ robot.dis.getDistance(DistanceUnit.CM));
+        telemetry.addData("Distance: ",(3.58 - ((zoomDis * Math.cos(robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle)) + 0.25)) / Math.cos(robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle));
         telemetry.update();//call the display telemetry
     }
 }

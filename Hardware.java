@@ -17,7 +17,7 @@ import java.lang.Math;
 
 public class Hardware {
     //Revs Per Decimeters - variables
-    double diameter = 10; //measure the wheel in centimeters
+    double diameter = 9; //measure the wheel in centimeters
     double ticks = 28; //REV-41-129 has 28 ticks per cycle
     double ticksPerCentimeters = (ticks / (diameter * Math.PI)) * 12; //12 is for the gear reduction
 

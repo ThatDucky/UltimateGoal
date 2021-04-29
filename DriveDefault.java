@@ -99,7 +99,13 @@ public class DriveDefault extends OpMode {
             robot.pattern = RevBlinkinLedDriver.BlinkinPattern.RED;
         }else if(gamepad1.left_bumper){
             //sets the fly wheel speed to the power shot goal if bummer is held
-            robot.fWheelPower(robot.powerShot - 150);
+            if(gamepad1.dpad_down){
+                robot.fWheelPower(robot.powerShot - 250);
+            }else if(gamepad1.dpad_up){
+                robot.fWheelPower(robot.powerShot - 50);
+            }else{
+                robot.fWheelPower(robot.powerShot - 150);
+            }
             //rev color
             robot.pattern = RevBlinkinLedDriver.BlinkinPattern.BREATH_RED;
         }else{
